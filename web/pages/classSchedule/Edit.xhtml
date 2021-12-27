@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ClassScheduleEditDlg" widgetVar="ClassScheduleEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditClassScheduleTitle}">
+            <h:form id="ClassScheduleEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{classScheduleController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditClassScheduleLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{classScheduleController.selected.id}" title="#{bundle.EditClassScheduleTitle_id}" required="true" requiredMessage="#{bundle.EditClassScheduleRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditClassScheduleLabel_dayOfWeek}" for="dayOfWeek" />
+                        <p:inputText id="dayOfWeek" value="#{classScheduleController.selected.dayOfWeek}" title="#{bundle.EditClassScheduleTitle_dayOfWeek}" required="true" requiredMessage="#{bundle.EditClassScheduleRequiredMessage_dayOfWeek}"/>
+                        <p:outputLabel value="#{bundle.EditClassScheduleLabel_startTime}" for="startTime" />
+                        <p:calendar id="startTime" pattern="HH:mm:ss" value="#{classScheduleController.selected.startTime}" title="#{bundle.EditClassScheduleTitle_startTime}" required="true" requiredMessage="#{bundle.EditClassScheduleRequiredMessage_startTime}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.EditClassScheduleLabel_endTime}" for="endTime" />
+                        <p:calendar id="endTime" pattern="HH:mm:ss" value="#{classScheduleController.selected.endTime}" title="#{bundle.EditClassScheduleTitle_endTime}" required="true" requiredMessage="#{bundle.EditClassScheduleRequiredMessage_endTime}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.EditClassScheduleLabel_remark}" for="remark" />
+                        <p:inputText id="remark" value="#{classScheduleController.selected.remark}" title="#{bundle.EditClassScheduleTitle_remark}" required="true" requiredMessage="#{bundle.EditClassScheduleRequiredMessage_remark}"/>
+                        <p:outputLabel value="#{bundle.EditClassScheduleLabel_oldLabGroup}" for="oldLabGroup" />
+                        <p:inputText id="oldLabGroup" value="#{classScheduleController.selected.oldLabGroup}" title="#{bundle.EditClassScheduleTitle_oldLabGroup}" required="true" requiredMessage="#{bundle.EditClassScheduleRequiredMessage_oldLabGroup}"/>
+                        <p:outputLabel value="#{bundle.EditClassScheduleLabel_sectionClass}" for="sectionClass" />
+                        <p:selectOneMenu id="sectionClass" value="#{classScheduleController.selected.sectionClass}" required="true" requiredMessage="#{bundle.EditClassScheduleRequiredMessage_sectionClass}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{sectionClassController.itemsAvailableSelectOne}"
+                                           var="sectionClassItem"
+                                           itemValue="#{sectionClassItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditClassScheduleLabel_room}" for="room" />
+                        <p:selectOneMenu id="room" value="#{classScheduleController.selected.room}" required="true" requiredMessage="#{bundle.EditClassScheduleRequiredMessage_room}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{roomController.itemsAvailableSelectOne}"
+                                           var="roomItem"
+                                           itemValue="#{roomItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditClassScheduleLabel_labGroup}" for="labGroup" />
+                        <p:selectOneMenu id="labGroup" value="#{classScheduleController.selected.labGroup}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{sectionLabGroupController.itemsAvailableSelectOne}"
+                                           var="labGroupItem"
+                                           itemValue="#{labGroupItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditClassScheduleLabel_timeSlot}" for="timeSlot" />
+                        <p:selectOneMenu id="timeSlot" value="#{classScheduleController.selected.timeSlot}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{timeSlotController.itemsAvailableSelectOne}"
+                                           var="timeSlotItem"
+                                           itemValue="#{timeSlotItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{classScheduleController.update}" value="#{bundle.Save}" update="display,:ClassScheduleListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ClassScheduleEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ClassScheduleEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TimeSlotEditDlg" widgetVar="TimeSlotEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditTimeSlotTitle}">
+            <h:form id="TimeSlotEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{timeSlotController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditTimeSlotLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{timeSlotController.selected.id}" title="#{bundle.EditTimeSlotTitle_id}" required="true" requiredMessage="#{bundle.EditTimeSlotRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditTimeSlotLabel_dayOfWeek}" for="dayOfWeek" />
+                        <p:inputText id="dayOfWeek" value="#{timeSlotController.selected.dayOfWeek}" title="#{bundle.EditTimeSlotTitle_dayOfWeek}" required="true" requiredMessage="#{bundle.EditTimeSlotRequiredMessage_dayOfWeek}"/>
+                        <p:outputLabel value="#{bundle.EditTimeSlotLabel_period}" for="period" />
+                        <p:inputText id="period" value="#{timeSlotController.selected.period}" title="#{bundle.EditTimeSlotTitle_period}" required="true" requiredMessage="#{bundle.EditTimeSlotRequiredMessage_period}"/>
+                        <p:outputLabel value="#{bundle.EditTimeSlotLabel_startTime}" for="startTime" />
+                        <p:calendar id="startTime" pattern="HH:mm:ss" value="#{timeSlotController.selected.startTime}" title="#{bundle.EditTimeSlotTitle_startTime}" required="true" requiredMessage="#{bundle.EditTimeSlotRequiredMessage_startTime}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.EditTimeSlotLabel_endTime}" for="endTime" />
+                        <p:calendar id="endTime" pattern="HH:mm:ss" value="#{timeSlotController.selected.endTime}" title="#{bundle.EditTimeSlotTitle_endTime}" required="true" requiredMessage="#{bundle.EditTimeSlotRequiredMessage_endTime}" showOn="button"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{timeSlotController.update}" value="#{bundle.Save}" update="display,:TimeSlotListForm:datalist,:growl" oncomplete="handleSubmit(args, 'TimeSlotEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="TimeSlotEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="StudentEditDlg" widgetVar="StudentEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditStudentTitle}">
+            <h:form id="StudentEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{studentController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditStudentLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{studentController.selected.id}" title="#{bundle.EditStudentTitle_id}" required="true" requiredMessage="#{bundle.EditStudentRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditStudentLabel_studentId}" for="studentId" />
+                        <p:inputText id="studentId" value="#{studentController.selected.studentId}" title="#{bundle.EditStudentTitle_studentId}" required="true" requiredMessage="#{bundle.EditStudentRequiredMessage_studentId}"/>
+                        <p:outputLabel value="#{bundle.EditStudentLabel_studentFullName}" for="studentFullName" />
+                        <p:inputText id="studentFullName" value="#{studentController.selected.studentFullName}" title="#{bundle.EditStudentTitle_studentFullName}" required="true" requiredMessage="#{bundle.EditStudentRequiredMessage_studentFullName}"/>
+                        <p:outputLabel value="#{bundle.EditStudentLabel_studentSection}" for="studentSection" />
+                        <p:selectOneMenu id="studentSection" value="#{studentController.selected.studentSection}" required="true" requiredMessage="#{bundle.EditStudentRequiredMessage_studentSection}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{sectionController.itemsAvailableSelectOne}"
+                                           var="studentSectionItem"
+                                           itemValue="#{studentSectionItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{studentController.update}" value="#{bundle.Save}" update="display,:StudentListForm:datalist,:growl" oncomplete="handleSubmit(args, 'StudentEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="StudentEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

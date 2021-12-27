@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CourseSlipViewDlg" widgetVar="CourseSlipViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewCourseSlipTitle}">
+            <h:form id="CourseSlipViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{courseSlipController.selected != null}">
+                        <h:outputText value="#{bundle.ViewCourseSlipLabel_id}"/>
+                        <h:outputText value="#{courseSlipController.selected.id}" title="#{bundle.ViewCourseSlipTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewCourseSlipLabel_block}"/>
+                        <p:selectBooleanCheckbox value="#{courseSlipController.selected.block}" disabled="true"/>
+                        <h:outputText value="#{bundle.ViewCourseSlipLabel_eventStyle}"/>
+                        <h:outputText value="#{courseSlipController.selected.eventStyle}" title="#{bundle.ViewCourseSlipTitle_eventStyle}"/>
+                        <h:outputText value="#{bundle.ViewCourseSlipLabel_activeBatch}"/>
+                        <h:outputText value="#{courseSlipController.selected.activeBatch}" title="#{bundle.ViewCourseSlipTitle_activeBatch}"/>
+                        <h:outputText value="#{bundle.ViewCourseSlipLabel_course}"/>
+                        <h:outputText value="#{courseSlipController.selected.course}" title="#{bundle.ViewCourseSlipTitle_course}"/>
+                        <h:outputText value="#{bundle.ViewCourseSlipLabel_courseSlip}"/>
+                        <h:outputText value="#{courseSlipController.selected.courseSlip}" title="#{bundle.ViewCourseSlipTitle_courseSlip}"/>
+                        <h:outputText value="#{bundle.ViewCourseSlipLabel_preBlock}"/>
+                        <h:outputText value="#{courseSlipController.selected.preBlock}" title="#{bundle.ViewCourseSlipTitle_preBlock}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="CourseSlipViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

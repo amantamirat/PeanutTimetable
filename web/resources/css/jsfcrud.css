@@ -1,0 +1,194 @@
+.ui-widget {
+    font-size: 12px !important;
+    font-family: Trebuchet MS, Helvetica, Arial, sans-serif; font-size: 1.1em;
+    color: red;  
+}
+.ui-layout-north {
+    z-index:20 !important;
+    overflow:visible !important;;
+}
+.ui-layout-north .ui-layout-unit-content {
+    overflow:visible !important;
+}
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Trebuchet MS, Helvetica, Arial, sans-serif; font-size: 1em; }
+
+.ui-widget-header {
+    text-align: center;
+    text-transform: uppercase;
+    background: #A6C9E2;
+    border: 1px solid #695649;
+}
+.ui-widget-header a {    
+    background: #A6C9E2;
+    border: 1px solid #695649;
+}
+
+.ui-datatable .ui-datatable-footer .footer-section {
+    text-align: left;
+}
+.ui-datatable-scrollable table {
+    table-layout: fixed !important;
+}
+
+.column {
+    font-weight: bold;
+    background-color: menu;
+}
+.block {
+    background-color: #fca752 !important;
+    background-image: none !important;
+    color: #000000 !important;
+}
+
+.possible {
+    background-color: #8db600 !important;
+    background-image: none !important;
+    color: #000000 !important;
+}
+
+.expired {
+    background-color: red !important;
+    background-image: none !important;
+    color: #000000 !important;
+}
+
+.completereturn {
+    background-color: yellow !important;
+    background-image: none !important;
+    color: #000000 !important;
+}
+
+.completenotreturn {
+    background-color: yellowgreen !important;
+    background-image: none !important;
+    color: #000000 !important;
+}
+
+
+
+
+
+
+.fc-today.ui-state-highlight {
+    background: none !important;
+    background-image: none !important;
+    background-color: white !important;
+    border: 1px solid #A6C9E2 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: #363636 !important;
+}
+
+.fc-today.fc-day-number {
+    background: none !important;
+    border-bottom: none !important;
+}
+
+td {
+    position: static !important;
+}
+
+a.redcrs {
+    background : #5d8aa8;
+    border-color: #932c39;
+    font-weight: bold;
+
+}
+
+a.greencrs {
+    background: #0033aa;
+    border-color: yellow;
+    font-weight: bold;
+}
+
+a.olivecrs {
+    background: #e32636;  
+    border-color: red;
+    font-weight: bold;
+}
+
+a.browncrs {
+    background: #cc0000;
+    font-weight: bold;
+    border-color: red;
+}
+
+a.yellowcrs {
+    background: #e52b50;
+    font-weight: bold;
+    border-color: yellow;
+}
+
+a.tomatocrs {
+    background: #873260;
+    font-weight: bold;
+    border-color: tomato;
+}
+
+a.woodcrs {
+    background: #ff033e;
+    font-weight: bold;     
+    border-color: wheat;
+}
+
+a.bluevioletcrs {
+    background: #9966cc;
+    font-weight: bold;
+}
+
+a.turquoisecrs {
+    background: #0070ff;
+    font-weight: bold;
+    border-color: aqua;
+
+}
+
+a.chocolatecrs {
+    background: #cb4154;
+    font-weight: bold;
+    color: black;
+}
+
+a.darkmagentacrs {
+    background: #008000;
+    font-weight: bold;
+    border-color: yellow;
+}
+
+a.pinkcrs {
+    background: #d2691e;
+    font-weight: bolder;
+}
+
+a.purplecrs {
+    background: #e03c31;
+    font-weight: bolder;
+}
+
+a.goldcrs {
+    background: #c32148;
+    font-weight: bold;
+}
+
+a.greenyellowcrs {
+    background: #967117;
+    font-weight: bolder;
+}
+
+a.greycrs {
+    background: #6f4e37;
+    font-weight: bolder;
+
+}
+
+a.darkredcrs {
+    background: #004b49;
+}
+
+a.darkseagreencrs {
+    background: #da3287;
+}
+
+a.darkorangecrs {
+    background: #ef3038;
+}

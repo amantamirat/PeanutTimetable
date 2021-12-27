@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="BatchViewDlg" widgetVar="BatchViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewBatchTitle}">
+            <h:form id="BatchViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{batchController.selected != null}">
+                        <h:outputText value="#{bundle.ViewBatchLabel_id}"/>
+                        <h:outputText value="#{batchController.selected.id}" title="#{bundle.ViewBatchTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewBatchLabel_entranceYear}"/>
+                        <h:outputText value="#{batchController.selected.entranceYear}" title="#{bundle.ViewBatchTitle_entranceYear}"/>
+                        <h:outputText value="#{bundle.ViewBatchLabel_program}"/>
+                        <h:outputText value="#{batchController.selected.program}" title="#{bundle.ViewBatchTitle_program}"/>
+                       </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="BatchViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

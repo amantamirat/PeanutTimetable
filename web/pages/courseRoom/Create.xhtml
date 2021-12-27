@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CourseRoomCreateDlg" widgetVar="CourseRoomCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateCourseRoomTitle}">
+            <h:form id="CourseRoomCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{courseRoomController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateCourseRoomLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{courseRoomController.selected.id}" title="#{bundle.CreateCourseRoomTitle_id}" required="true" requiredMessage="#{bundle.CreateCourseRoomRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreateCourseRoomLabel_room}" for="room" />
+                        <p:selectOneMenu id="room" value="#{courseRoomController.selected.room}" required="true" requiredMessage="#{bundle.EditCourseRoomRequiredMessage_room}">
+                            <f:selectItems value="#{roomController.itemsAvailableSelectOne}"
+                                           var="roomItem"
+                                           itemValue="#{roomItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateCourseRoomLabel_course}" for="course" />
+                        <p:selectOneMenu id="course" value="#{courseRoomController.selected.course}" required="true" requiredMessage="#{bundle.EditCourseRoomRequiredMessage_course}">
+                            <f:selectItems value="#{courseController.itemsAvailableSelectOne}"
+                                           var="courseItem"
+                                           itemValue="#{courseItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{courseRoomController.create}" value="#{bundle.Save}" update="display,:CourseRoomListForm:datalist,:growl" oncomplete="handleSubmit(args,'CourseRoomCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="CourseRoomCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

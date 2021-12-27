@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CollegeRoomCreateDlg" widgetVar="CollegeRoomCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateCollegeRoomTitle}">
+            <h:form id="CollegeRoomCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{collegeRoomController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateCollegeRoomLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{collegeRoomController.selected.id}" title="#{bundle.CreateCollegeRoomTitle_id}" required="true" requiredMessage="#{bundle.CreateCollegeRoomRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreateCollegeRoomLabel_room}" for="room" />
+                        <p:selectOneMenu id="room" value="#{collegeRoomController.selected.room}" required="true" requiredMessage="#{bundle.EditCollegeRoomRequiredMessage_room}">
+                            <f:selectItems value="#{roomController.itemsAvailableSelectOne}"
+                                           var="roomItem"
+                                           itemValue="#{roomItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateCollegeRoomLabel_college}" for="college" />
+                        <p:selectOneMenu id="college" value="#{collegeRoomController.selected.college}" required="true" requiredMessage="#{bundle.EditCollegeRoomRequiredMessage_college}">
+                            <f:selectItems value="#{collegeController.itemsAvailableSelectOne}"
+                                           var="collegeItem"
+                                           itemValue="#{collegeItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{collegeRoomController.create}" value="#{bundle.Save}" update="display,:CollegeRoomListForm:datalist,:growl" oncomplete="handleSubmit(args,'CollegeRoomCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="CollegeRoomCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

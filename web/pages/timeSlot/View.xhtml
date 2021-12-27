@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TimeSlotViewDlg" widgetVar="TimeSlotViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewTimeSlotTitle}">
+            <h:form id="TimeSlotViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{timeSlotController.selected != null}">
+                        <h:outputText value="#{bundle.ViewTimeSlotLabel_id}"/>
+                        <h:outputText value="#{timeSlotController.selected.id}" title="#{bundle.ViewTimeSlotTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewTimeSlotLabel_dayOfWeek}"/>
+                        <h:outputText value="#{timeSlotController.selected.dayOfWeek}" title="#{bundle.ViewTimeSlotTitle_dayOfWeek}"/>
+                        <h:outputText value="#{bundle.ViewTimeSlotLabel_period}"/>
+                        <h:outputText value="#{timeSlotController.selected.period}" title="#{bundle.ViewTimeSlotTitle_period}"/>
+                        <h:outputText value="#{bundle.ViewTimeSlotLabel_startTime}"/>
+                        <h:outputText value="#{timeSlotController.selected.startTime}" title="#{bundle.ViewTimeSlotTitle_startTime}">
+                            <f:convertDateTime pattern="HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewTimeSlotLabel_endTime}"/>
+                        <h:outputText value="#{timeSlotController.selected.endTime}" title="#{bundle.ViewTimeSlotTitle_endTime}">
+                            <f:convertDateTime pattern="HH:mm:ss" />
+                        </h:outputText>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="TimeSlotViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

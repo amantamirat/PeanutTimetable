@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <style type="text/css">
+        .ui-datatable-frozenlayout-left {
+            width: 20%;
+        }
+
+        .ui-datatable-frozenlayout-right {
+            width: 80%;
+        }
+    </style>
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListCourseSlipTitle}"></h:outputText>
+        </ui:define>
+
+
+
+
+        <ui:define name="body">
+
+            <pe:layoutPane position="west" size="300" styleHeader="Left">
+                <p:card> 
+                    <f:facet name="title">
+                        Academic Year
+                    </f:facet>
+                    <h:form id="menuFormWest">                                        
+                        <p:menu model="#{courseSlipController.menuModel}" toggleable="true" style="width:275px" />                                               
+                    </h:form>   
+                </p:card>   
+            </pe:layoutPane>
+
+            <pe:layoutPane position="center">
+                <h:form id="CourseSlipListForm">
+
+                    <div class="card">
+                        <p:toolbar>
+                            <p:toolbarGroup>                         
+                                <p:commandButton id="createButton" value="New" icon="pi pi-plus" actionListener="#{courseSlipController.prepareCreate}"
+                                                 update=":CourseSlipCreateForm" oncomplete="PF('CourseSlipCreateDialog').show()"
+                                                 styleClass="ui-button-success" style="margin-right: .5rem">
+                                    <p:resetInput target=":form:manage-product-content"/>
+                                </p:commandButton>
+                                <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" 
+                                                 update=":CourseSlipEditForm" 
+                                                 oncomplete="PF('CourseSlipEditDialog').show()" 
+                                                 disabled="#{empty courseSlipController.selected}"
+                                                 style="margin-right: .5rem"/>
+
+                                <p:commandButton id="deleteButton" value="#{bundle.Delete}"
+                                                 icon="pi pi-trash" 
+                                                 styleClass="ui-button-danger"
+                                                 actionListener="#{courseSlipController.destroy}" 
+                                                 update=":growl,datalist" disabled="#{empty courseSlipController.selected}"
+                                                 >
+                                    <p:confirm header="Confirmation" message="Delete the selected Slip?"
+                                               icon="pi pi-exclamation-triangle"/>
+                                </p:commandButton>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <p:fileUpload mode="simple" skinSimple="true" label="Import" chooseIcon="pi pi-download"/>
+                                <p:commandButton value="Export" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+                                    <p:dataExporter type="pdf" target="datalist" fileName="slip"/>
+                                </p:commandButton>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+
+                        <p:dataTable id="datalist" 
+                                     value="#{courseSlipController.selectedActiveBatch.courseSlipCollection}" 
+                                     var="item"
+                                     lazy="false"
+                                     selectionMode="single" 
+                                     selection="#{courseSlipController.selected}"
+                                     paginator="true"
+                                     rowKey="#{item.id}"
+                                     rows="10"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     rowIndexVar="rowIndex"
+                                     scrollable="true"
+                                     frozenColumns="1"
+                                     scrollHeight="300"
+                                     widgetVar="slipTable" 
+                                     paginatorPosition="bottom"
+                                     >
+
+
+                            <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton,@form:deleteButton"/>
+                            <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton,@form:deleteButton"/>
+
+
+
+
+
+                            <p:column sortBy="#{item.activeBatch.batch.toString()}" filterBy="#{item.activeBatch.batch.toString()}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.ListCourseSlipTitle_activeBatch}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.activeBatch.batch.toString()}"/>
+                            </p:column>
+                            <p:column sortBy="#{item.course.courseTitle}" filterBy="#{item.course.courseTitle}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.ListCourseSlipTitle_course}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.course.courseTitle}"/>
+                            </p:column>    
+
+
+
+
+                        </p:dataTable>
+                    </div>
+
+
+                    <ui:include src="/confirmation.xhtml"/>
+                </h:form>
+                <ui:include src="Create.xhtml"/>
+                <ui:include src="Edit.xhtml"/>
+                <ui:include src="View.xhtml"/>
+            </pe:layoutPane>
+
+
+
+        </ui:define>
+    </ui:composition>
+
+</html>

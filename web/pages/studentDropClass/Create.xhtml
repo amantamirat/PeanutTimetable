@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="StudentDropClassCreateDlg" widgetVar="StudentDropClassCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateStudentDropClassTitle}">
+            <h:form id="StudentDropClassCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{studentDropClassController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateStudentDropClassLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{studentDropClassController.selected.id}" title="#{bundle.CreateStudentDropClassTitle_id}" required="true" requiredMessage="#{bundle.CreateStudentDropClassRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreateStudentDropClassLabel_student}" for="student" />
+                        <p:selectOneMenu id="student" value="#{studentDropClassController.selected.student}" required="true" requiredMessage="#{bundle.EditStudentDropClassRequiredMessage_student}">
+                            <f:selectItems value="#{studentController.itemsAvailableSelectOne}"
+                                           var="studentItem"
+                                           itemValue="#{studentItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateStudentDropClassLabel_droppedClass}" for="droppedClass" />
+                        <p:selectOneMenu id="droppedClass" value="#{studentDropClassController.selected.droppedClass}" required="true" requiredMessage="#{bundle.EditStudentDropClassRequiredMessage_droppedClass}">
+                            <f:selectItems value="#{courseSlipController.itemsAvailableSelectOne}"
+                                           var="droppedClassItem"
+                                           itemValue="#{droppedClassItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{studentDropClassController.create}" value="#{bundle.Save}" update="display,:StudentDropClassListForm:datalist,:growl" oncomplete="handleSubmit(args,'StudentDropClassCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="StudentDropClassCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

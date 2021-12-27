@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ClassScheduleViewDlg" widgetVar="ClassScheduleViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewClassScheduleTitle}">
+            <h:form id="ClassScheduleViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{classScheduleController.selected != null}">
+                        <h:outputText value="#{bundle.ViewClassScheduleLabel_id}"/>
+                        <h:outputText value="#{classScheduleController.selected.id}" title="#{bundle.ViewClassScheduleTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewClassScheduleLabel_dayOfWeek}"/>
+                        <h:outputText value="#{classScheduleController.selected.dayOfWeek}" title="#{bundle.ViewClassScheduleTitle_dayOfWeek}"/>
+                        <h:outputText value="#{bundle.ViewClassScheduleLabel_startTime}"/>
+                        <h:outputText value="#{classScheduleController.selected.startTime}" title="#{bundle.ViewClassScheduleTitle_startTime}">
+                            <f:convertDateTime pattern="HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewClassScheduleLabel_endTime}"/>
+                        <h:outputText value="#{classScheduleController.selected.endTime}" title="#{bundle.ViewClassScheduleTitle_endTime}">
+                            <f:convertDateTime pattern="HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewClassScheduleLabel_remark}"/>
+                        <h:outputText value="#{classScheduleController.selected.remark}" title="#{bundle.ViewClassScheduleTitle_remark}"/>
+                        <h:outputText value="#{bundle.ViewClassScheduleLabel_oldLabGroup}"/>
+                        <h:outputText value="#{classScheduleController.selected.oldLabGroup}" title="#{bundle.ViewClassScheduleTitle_oldLabGroup}"/>
+                        <h:outputText value="#{bundle.ViewClassScheduleLabel_sectionClass}"/>
+                        <h:outputText value="#{classScheduleController.selected.sectionClass}" title="#{bundle.ViewClassScheduleTitle_sectionClass}"/>
+                        <h:outputText value="#{bundle.ViewClassScheduleLabel_room}"/>
+                        <h:outputText value="#{classScheduleController.selected.room}" title="#{bundle.ViewClassScheduleTitle_room}"/>
+                        <h:outputText value="#{bundle.ViewClassScheduleLabel_labGroup}"/>
+                        <h:outputText value="#{classScheduleController.selected.labGroup}" title="#{bundle.ViewClassScheduleTitle_labGroup}"/>
+                        <h:outputText value="#{bundle.ViewClassScheduleLabel_timeSlot}"/>
+                        <h:outputText value="#{classScheduleController.selected.timeSlot}" title="#{bundle.ViewClassScheduleTitle_timeSlot}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="ClassScheduleViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

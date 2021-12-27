@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+
+
+
+    <ui:composition>
+        <p:dialog id="AcademicCalendarCreateDlg" widgetVar="AcademicCalendarCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateAcademicCalendarTitle}" minHeight="150" minWidth="800" showEffect="fade" minimizable="true" maximizable="true">
+            <div class="card">
+                <h:form id="AcademicCalendarCreateForm">                   
+                    <p:wizard widgetVar="wiz" id="display" flowListener="#{academicCalendarController.onFlowProcess}">                       
+                        <p:tab id="basic" title="Basic">
+                            <p:panel header="Academic Year and Semester" rendered="#{academicCalendarController.selected != null}">
+                                <p:messages/>
+                                <div class="ui-fluid">
+                                    <div class="p-field p-grid">
+                                        <label for="academicYear" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">#{bundle.CreateAcademicCalendarLabel_academicYear}</label>
+                                        <div class="p-col-12 p-md-10">
+                                            <p:inputMask id="academicYear" value="#{academicCalendarController.selected.academicYear}" mask="9999/99" validateMask="true" title="#{bundle.CreateAcademicCalendarTitle_academicYear}" required="true" requiredMessage="#{bundle.CreateAcademicCalendarRequiredMessage_academicYear}"/>
+                                        </div>
+                                    </div>
+                                    <div class="p-field p-grid">
+                                        <label for="semester" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">#{bundle.CreateAcademicCalendarLabel_semester}</label>
+                                        <div class="p-col-12 p-md-10">
+                                            <p:selectOneMenu id="semester" value="#{academicCalendarController.selected.semester}"  required="true" requiredMessage="#{bundle.CreateAcademicCalendarRequiredMessage_semester}">
+                                                <f:selectItem itemLabel="..Select Semester.." itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItems value="#{peanutController.semesters}" />
+                                            </p:selectOneMenu> 
+                                        </div>
+                                    </div>
+                                </div>                                
+                            </p:panel>
+                        </p:tab>
+                        <p:tab id="dates" title="Dates">
+                            <p:panel header="Class and Exams Dates" rendered="#{academicCalendarController.selected.semester != null}">
+                                <p:messages/>
+                                <div class="ui-fluid">
+                                    <div class="p-field p-grid">
+                                        <label for="classStartDate" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">#{bundle.CreateAcademicCalendarLabel_classStartDate}</label>
+                                        <div class="p-col-12 p-md-10">
+                                            <p:calendar id="classStartDate" pattern="MM/dd/yyyy" value="#{academicCalendarController.selected.classStartDate}" title="#{bundle.EditAcademicCalendarTitle_classStartDate}" required="true" requiredMessage="#{bundle.EditAcademicCalendarRequiredMessage_classStartDate}" showOn="button"/>
+                                        </div>
+                                    </div>
+                                    <div class="p-field p-grid">
+                                        <label for="classEndDate" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">#{bundle.CreateAcademicCalendarLabel_classEndDate}</label>
+                                        <div class="p-col-12 p-md-10">
+                                            <p:calendar id="classEndDate" pattern="MM/dd/yyyy" value="#{academicCalendarController.selected.classEndDate}" title="#{bundle.EditAcademicCalendarTitle_classEndDate}" required="true" requiredMessage="#{bundle.EditAcademicCalendarRequiredMessage_classEndDate}" showOn="button"/>
+                                        </div>
+                                    </div>
+                                    <div class="p-field p-grid">
+                                        <label for="examStartDate" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">#{bundle.CreateAcademicCalendarLabel_examStartDate}</label>
+                                        <div class="p-col-12 p-md-10">
+                                            <p:calendar id="examStartDate" pattern="MM/dd/yyyy" value="#{academicCalendarController.selected.examStartDate}" title="#{bundle.EditAcademicCalendarTitle_examStartDate}" required="true" requiredMessage="#{bundle.EditAcademicCalendarRequiredMessage_examStartDate}" showOn="button"/>
+                                        </div>
+                                    </div>
+                                    <div class="p-field p-grid">
+                                        <label for="examEndDate" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">#{bundle.CreateAcademicCalendarLabel_examEndDate}</label>
+                                        <div class="p-col-12 p-md-10">
+                                            <p:calendar id="examEndDate" pattern="MM/dd/yyyy" value="#{academicCalendarController.selected.examEndDate}" title="#{bundle.EditAcademicCalendarTitle_examEndDate}" required="true" requiredMessage="#{bundle.EditAcademicCalendarRequiredMessage_examEndDate}" showOn="button"/>
+                                        </div>
+                                    </div>
+                                </div>                                
+                            </p:panel>
+                        </p:tab>
+                        <p:tab id="batches" title="Batches">
+                            <p:panel header="Select Bathes of the Academic Calendar">
+                                <div class="card">                                   
+                                    <p:pickList id="myPickList" 
+                                                value="#{academicCalendarController.dualBatches}" 
+                                                var="batch"
+                                                itemValue="#{batch}" 
+                                                itemLabel="#{batch.toString()} #{batch.program.department.college.toString()}" 
+                                                showSourceControls="true"
+                                                showTargetControls="true" showCheckbox="true"
+                                                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains"
+                                                responsive="true" 
+                                                converter="entityConverter">                                                                             
+
+
+                                        <f:facet name="sourceCaption">Available</f:facet>
+                                        <f:facet name="targetCaption">Starting</f:facet>
+
+                                        <p:ajax event="transfer" listener="#{academicCalendarController.onTransfer}" update=":growl"/>
+                                        <p:ajax event="select" listener="#{academicCalendarController.onSelect}" update=":growl"/>
+                                        <p:ajax event="unselect" listener="#{academicCalendarController.onUnselect}" update=":growl"/>
+                                        <p:ajax event="reorder" listener="#{academicCalendarController.onReorder}" update=":growl"/>
+
+                                        <p:column style="border-bottom:1px solid lightgray">
+                                            <p:panelGrid>
+                                                <p:row>
+                                                    <p:column style="padding-left:0;font-size:11pt">
+                                                        <h:outputLabel value="#{batch.toString()}"
+                                                                       style="font-weight:bold" />
+                                                    </p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column style="padding:0">
+                                                        <h:outputLabel
+                                                            value="#{batch.program.department.college.toString()}" />
+                                                    </p:column>
+                                                </p:row>                        
+                                            </p:panelGrid>
+                                        </p:column>
+
+                                    </p:pickList>
+                                </div>                                
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="confirm" title="Confirmation">
+                            <p:panel header="Confirmation">
+                                <p:commandButton actionListener="#{academicCalendarController.create}" value="#{bundle.Save}" update="display,:AcademicCalendarListForm:datalist,:growl" oncomplete="handleSubmit(args,'AcademicCalendarCreateDialog');"/>
+                                <p:commandButton value="#{bundle.Cancel}" onclick="AcademicCalendarCreateDialog.hide()"/>
+                            </p:panel>
+                        </p:tab>
+                    </p:wizard>                
+                </h:form>
+            </div>
+        </p:dialog>
+    </ui:composition>
+</html>

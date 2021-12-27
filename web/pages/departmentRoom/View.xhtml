@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DepartmentRoomViewDlg" widgetVar="DepartmentRoomViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewDepartmentRoomTitle}">
+            <h:form id="DepartmentRoomViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{departmentRoomController.selected != null}">
+                        <h:outputText value="#{bundle.ViewDepartmentRoomLabel_id}"/>
+                        <h:outputText value="#{departmentRoomController.selected.id}" title="#{bundle.ViewDepartmentRoomTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewDepartmentRoomLabel_department}"/>
+                        <h:outputText value="#{departmentRoomController.selected.department}" title="#{bundle.ViewDepartmentRoomTitle_department}"/>
+                        <h:outputText value="#{bundle.ViewDepartmentRoomLabel_room}"/>
+                        <h:outputText value="#{departmentRoomController.selected.room}" title="#{bundle.ViewDepartmentRoomTitle_room}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="DepartmentRoomViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

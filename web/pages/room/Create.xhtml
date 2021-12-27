@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="RoomCreateDlg" widgetVar="RoomCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateRoomTitle}">
+            <h:form id="RoomCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{roomController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateRoomLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{roomController.selected.id}" title="#{bundle.CreateRoomTitle_id}" required="true" requiredMessage="#{bundle.CreateRoomRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreateRoomLabel_blockName}" for="blockName" />
+                        <p:inputText id="blockName" value="#{roomController.selected.blockName}" title="#{bundle.CreateRoomTitle_blockName}" required="true" requiredMessage="#{bundle.CreateRoomRequiredMessage_blockName}"/>
+                        <p:outputLabel value="#{bundle.CreateRoomLabel_roomNumber}" for="roomNumber" />
+                        <p:inputText id="roomNumber" value="#{roomController.selected.roomNumber}" title="#{bundle.CreateRoomTitle_roomNumber}" required="true" requiredMessage="#{bundle.CreateRoomRequiredMessage_roomNumber}"/>
+                        <p:outputLabel value="#{bundle.CreateRoomLabel_purpose}" for="purpose" />
+                        <p:inputText id="purpose" value="#{roomController.selected.purpose}" title="#{bundle.CreateRoomTitle_purpose}" required="true" requiredMessage="#{bundle.CreateRoomRequiredMessage_purpose}"/>
+                        <p:outputLabel value="#{bundle.CreateRoomLabel_laboratory}" for="laboratory" />
+                        <p:inputText id="roomSize" value="#{roomController.selected.roomSize}" title="#{bundle.CreateRoomTitle_roomSize}" required="true" requiredMessage="#{bundle.CreateRoomRequiredMessage_roomSize}"/>
+                        <p:outputLabel value="#{bundle.CreateRoomLabel_ground}" for="ground" />
+                        <p:selectBooleanCheckbox id="ground" value="#{roomController.selected.ground}" required="true" requiredMessage="#{bundle.EditRoomRequiredMessage_ground}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{roomController.create}" value="#{bundle.Save}" update="display,:RoomListForm:datalist,:growl" oncomplete="handleSubmit(args,'RoomCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="RoomCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CourseEditDlg" widgetVar="CourseEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditCourseTitle}">
+            <h:form id="CourseEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{courseController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditCourseLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{courseController.selected.id}" title="#{bundle.EditCourseTitle_id}" required="true" requiredMessage="#{bundle.EditCourseRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditCourseLabel_courseCode}" for="courseCode" />
+                        <p:inputText id="courseCode" value="#{courseController.selected.courseCode}" title="#{bundle.EditCourseTitle_courseCode}" required="true" requiredMessage="#{bundle.EditCourseRequiredMessage_courseCode}"/>
+                        <p:outputLabel value="#{bundle.EditCourseLabel_courseTitle}" for="courseTitle" />
+                        <p:inputText id="courseTitle" value="#{courseController.selected.courseTitle}" title="#{bundle.EditCourseTitle_courseTitle}" required="true" requiredMessage="#{bundle.EditCourseRequiredMessage_courseTitle}"/>
+                        <p:outputLabel value="#{bundle.EditCourseLabel_lectureHours}" for="lectureHours" />
+                        <p:inputText id="lectureHours" value="#{courseController.selected.lectureHours}" title="#{bundle.EditCourseTitle_lectureHours}" required="true" requiredMessage="#{bundle.EditCourseRequiredMessage_lectureHours}"/>
+                        <p:outputLabel value="#{bundle.EditCourseLabel_laboratoryHours}" for="laboratoryHours" />
+                        <p:inputText id="laboratoryHours" value="#{courseController.selected.laboratoryHours}" title="#{bundle.EditCourseTitle_laboratoryHours}" required="true" requiredMessage="#{bundle.EditCourseRequiredMessage_laboratoryHours}"/>
+                        <p:outputLabel value="#{bundle.EditCourseLabel_tutorialHours}" for="tutorialHours" />
+                        <p:inputText id="tutorialHours" value="#{courseController.selected.tutorialHours}" title="#{bundle.EditCourseTitle_tutorialHours}" required="true" requiredMessage="#{bundle.EditCourseRequiredMessage_tutorialHours}"/>
+                        <p:outputLabel value="#{bundle.EditCourseLabel_ownerDepartment}" for="ownerDepartment" />
+                        <p:selectOneMenu id="ownerDepartment" value="#{courseController.selected.ownerDepartment}" required="true" requiredMessage="#{bundle.EditCourseRequiredMessage_ownerDepartment}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{departmentController.itemsAvailableSelectOne}"
+                                           var="ownerDepartmentItem"
+                                           itemValue="#{ownerDepartmentItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditCourseLabel_department}" for="department" />
+                        <p:selectOneMenu id="department" value="#{courseController.selected.department}" required="true" requiredMessage="#{bundle.EditCourseRequiredMessage_department}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{departmentController.itemsAvailableSelectOne}"
+                                           var="departmentItem"
+                                           itemValue="#{departmentItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{courseController.update}" value="#{bundle.Save}" update="display,:CourseListForm:datalist,:growl" oncomplete="handleSubmit(args, 'CourseEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="CourseEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="StaffClassCreateDlg" widgetVar="StaffClassCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateStaffClassTitle}">
+            <h:form id="StaffClassCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{staffClassController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateStaffClassLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{staffClassController.selected.id}" title="#{bundle.CreateStaffClassTitle_id}" required="true" requiredMessage="#{bundle.CreateStaffClassRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreateStaffClassLabel_mode}" for="mode" />
+                        <p:inputText id="mode" value="#{staffClassController.selected.mode}" title="#{bundle.CreateStaffClassTitle_mode}" required="true" requiredMessage="#{bundle.CreateStaffClassRequiredMessage_mode}"/>
+                        <p:outputLabel value="#{bundle.CreateStaffClassLabel_courseClass}" for="courseClass" />
+                        <p:selectOneMenu id="courseClass" value="#{staffClassController.selected.courseClass}" required="true" requiredMessage="#{bundle.EditStaffClassRequiredMessage_courseClass}">
+                            <f:selectItems value="#{sectionClassController.itemsAvailableSelectOne}"
+                                           var="courseClassItem"
+                                           itemValue="#{courseClassItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateStaffClassLabel_staff}" for="staff" />
+                        <p:selectOneMenu id="staff" value="#{staffClassController.selected.staff}" required="true" requiredMessage="#{bundle.EditStaffClassRequiredMessage_staff}">
+                            <f:selectItems value="#{staffController.itemsAvailableSelectOne}"
+                                           var="staffItem"
+                                           itemValue="#{staffItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateStaffClassLabel_labGroup}" for="labGroup" />
+                        <p:selectOneMenu id="labGroup" value="#{staffClassController.selected.labGroup}" >
+                            <f:selectItems value="#{sectionLabGroupController.itemsAvailableSelectOne}"
+                                           var="labGroupItem"
+                                           itemValue="#{labGroupItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{staffClassController.create}" value="#{bundle.Save}" update="display,:StaffClassListForm:datalist,:growl" oncomplete="handleSubmit(args,'StaffClassCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="StaffClassCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

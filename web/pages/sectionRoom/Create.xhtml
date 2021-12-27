@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="SectionRoomCreateDlg" widgetVar="SectionRoomCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateSectionRoomTitle}">
+            <h:form id="SectionRoomCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{sectionRoomController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateSectionRoomLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{sectionRoomController.selected.id}" title="#{bundle.CreateSectionRoomTitle_id}" required="true" requiredMessage="#{bundle.CreateSectionRoomRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreateSectionRoomLabel_section}" for="section" />
+                        <p:selectOneMenu id="section" value="#{sectionRoomController.selected.section}" required="true" requiredMessage="#{bundle.EditSectionRoomRequiredMessage_section}">
+                            <f:selectItems value="#{sectionController.itemsAvailableSelectOne}"
+                                           var="sectionItem"
+                                           itemValue="#{sectionItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateSectionRoomLabel_rroom}" for="rroom" />
+                        <p:selectOneMenu id="rroom" value="#{sectionRoomController.selected.rroom}" required="true" requiredMessage="#{bundle.EditSectionRoomRequiredMessage_rroom}">
+                            <f:selectItems value="#{roomController.itemsAvailableSelectOne}"
+                                           var="rroomItem"
+                                           itemValue="#{rroomItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{sectionRoomController.create}" value="#{bundle.Save}" update="display,:SectionRoomListForm:datalist,:growl" oncomplete="handleSubmit(args,'SectionRoomCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="SectionRoomCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

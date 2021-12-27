@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="SectionLabGroupCreateDlg" widgetVar="SectionLabGroupCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateSectionLabGroupTitle}">
+            <h:form id="SectionLabGroupCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{sectionLabGroupController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateSectionLabGroupLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{sectionLabGroupController.selected.id}" title="#{bundle.CreateSectionLabGroupTitle_id}" required="true" requiredMessage="#{bundle.CreateSectionLabGroupRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreateSectionLabGroupLabel_section}" for="section" />
+                        <p:inputText id="section" value="#{sectionLabGroupController.selected.section}" title="#{bundle.CreateSectionLabGroupTitle_section}" required="true" requiredMessage="#{bundle.CreateSectionLabGroupRequiredMessage_section}"/>
+                        <p:outputLabel value="#{bundle.CreateSectionLabGroupLabel_labGroup}" for="labGroup" />
+                        <p:inputText id="labGroup" value="#{sectionLabGroupController.selected.labGroup}" title="#{bundle.CreateSectionLabGroupTitle_labGroup}" required="true" requiredMessage="#{bundle.CreateSectionLabGroupRequiredMessage_labGroup}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{sectionLabGroupController.create}" value="#{bundle.Save}" update="display,:SectionLabGroupListForm:datalist,:growl" oncomplete="handleSubmit(args,'SectionLabGroupCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="SectionLabGroupCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

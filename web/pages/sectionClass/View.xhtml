@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="SectionClassViewDlg" widgetVar="SectionClassViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewSectionClassTitle}">
+            <h:form id="SectionClassViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{sectionClassController.selected != null}">
+                        <h:outputText value="#{bundle.ViewSectionClassLabel_id}"/>
+                        <h:outputText value="#{sectionClassController.selected.id}" title="#{bundle.ViewSectionClassTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewSectionClassLabel_slip}"/>
+                        <h:outputText value="#{sectionClassController.selected.slip}" title="#{bundle.ViewSectionClassTitle_slip}"/>
+                        <h:outputText value="#{bundle.ViewSectionClassLabel_section}"/>
+                        <h:outputText value="#{sectionClassController.selected.section}" title="#{bundle.ViewSectionClassTitle_section}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="SectionClassViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

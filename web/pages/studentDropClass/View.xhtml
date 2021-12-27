@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="StudentDropClassViewDlg" widgetVar="StudentDropClassViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewStudentDropClassTitle}">
+            <h:form id="StudentDropClassViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{studentDropClassController.selected != null}">
+                        <h:outputText value="#{bundle.ViewStudentDropClassLabel_id}"/>
+                        <h:outputText value="#{studentDropClassController.selected.id}" title="#{bundle.ViewStudentDropClassTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewStudentDropClassLabel_student}"/>
+                        <h:outputText value="#{studentDropClassController.selected.student}" title="#{bundle.ViewStudentDropClassTitle_student}"/>
+                        <h:outputText value="#{bundle.ViewStudentDropClassLabel_droppedClass}"/>
+                        <h:outputText value="#{studentDropClassController.selected.droppedClass}" title="#{bundle.ViewStudentDropClassTitle_droppedClass}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="StudentDropClassViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

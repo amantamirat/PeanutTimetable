@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ProgramCreateDlg" widgetVar="ProgramCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateProgramTitle}">
+            <h:form id="ProgramCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{programController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateProgramLabel_programName}" for="programName" />
+                        <p:inputText id="programName" value="#{programController.selected.programName}" title="#{bundle.CreateProgramTitle_programName}" required="true" requiredMessage="#{bundle.CreateProgramRequiredMessage_programName}"/>
+                        <p:outputLabel value="#{bundle.CreateProgramLabel_programLevel}" for="programLevel" />
+                        <p:selectOneMenu id="programLevel" value="#{programController.selected.programLevel}"  required="true" requiredMessage="#{bundle.CreateProgramRequiredMessage_programLevel}">
+                            <f:selectItem itemLabel="..Select Program Level.." itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{peanutController.programLevels}" />
+                        </p:selectOneMenu> 
+                        <p:outputLabel value="Classfication" for="programClassfication" />
+                        <p:selectOneMenu id="programClassfication" value="#{programController.selected.programClassification}"  required="true" requiredMessage="Select ProgramClassfication it is Required">
+                            <f:selectItem itemLabel="..Select Program Classfication.." itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{peanutController.programClassifications}" />
+                        </p:selectOneMenu> 
+                        <p:outputLabel value="Minimum Year Level" for="minYearOfStudy" />
+                        <p:inputText id="minYearOfStudy" value="#{programController.selected.minYearOfStudy}" title="Minimum Starting Year Level" required="true" requiredMessage="Minimum Year Level Required"/>
+                        <p:outputLabel value="#{bundle.CreateProgramLabel_maxYearOfStudy}" for="maxYearOfStudy" />
+                        <p:inputText id="maxYearOfStudy" value="#{programController.selected.maxYearOfStudy}" title="#{bundle.CreateProgramTitle_maxYearOfStudy}" required="true" requiredMessage="#{bundle.CreateProgramRequiredMessage_maxYearOfStudy}"/>
+                        <p:outputLabel value="#{bundle.CreateProgramLabel_department}" for="department" />
+                        <p:selectOneMenu id="department" value="#{programController.selected.department}" required="true" requiredMessage="#{bundle.EditProgramRequiredMessage_department}">
+                            <f:selectItems value="#{departmentController.itemsAvailableSelectOne}"
+                                           var="departmentItem"
+                                           itemValue="#{departmentItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{programController.create}" value="#{bundle.Save}" update="display,:ProgramListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ProgramCreateDialog'));"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ProgramCreateDialog.hide()"  process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

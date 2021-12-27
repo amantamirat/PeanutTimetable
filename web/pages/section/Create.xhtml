@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="SectionCreateDlg" widgetVar="SectionCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateSectionTitle}">
+            <h:form id="SectionCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{sectionController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateSectionLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{sectionController.selected.id}" title="#{bundle.CreateSectionTitle_id}" required="true" requiredMessage="#{bundle.CreateSectionRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreateSectionLabel_sectionGroup}" for="sectionGroup" />
+                        <p:inputText id="sectionGroup" value="#{sectionController.selected.sectionGroup}" title="#{bundle.CreateSectionTitle_sectionGroup}" required="true" requiredMessage="#{bundle.CreateSectionRequiredMessage_sectionGroup}"/>
+                        <p:outputLabel value="#{bundle.CreateSectionLabel_sectionSize}" for="sectionSize" />
+                        <p:inputText id="sectionSize" value="#{sectionController.selected.sectionSize}" title="#{bundle.CreateSectionTitle_sectionSize}" required="true" requiredMessage="#{bundle.CreateSectionRequiredMessage_sectionSize}"/>
+                        <p:outputLabel value="#{bundle.CreateSectionLabel_batch}" for="batch" />
+                        <p:selectOneMenu id="batch" value="#{sectionController.selected.batch}" required="true" requiredMessage="#{bundle.EditSectionRequiredMessage_batch}">
+                            <f:selectItems value="#{batchController.itemsAvailableSelectOne}"
+                                           var="batchItem"
+                                           itemValue="#{batchItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{sectionController.create}" value="#{bundle.Save}" update="display,:SectionListForm:datalist,:growl" oncomplete="handleSubmit(args,'SectionCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="SectionCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

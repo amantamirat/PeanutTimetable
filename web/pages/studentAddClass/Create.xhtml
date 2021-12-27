@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="StudentAddClassCreateDlg" widgetVar="StudentAddClassCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateStudentAddClassTitle}">
+            <h:form id="StudentAddClassCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{studentAddClassController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateStudentAddClassLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{studentAddClassController.selected.id}" title="#{bundle.CreateStudentAddClassTitle_id}" required="true" requiredMessage="#{bundle.CreateStudentAddClassRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreateStudentAddClassLabel_addedClass}" for="addedClass" />
+                        <p:selectOneMenu id="addedClass" value="#{studentAddClassController.selected.addedClass}" required="true" requiredMessage="#{bundle.EditStudentAddClassRequiredMessage_addedClass}">
+                            <f:selectItems value="#{sectionClassController.itemsAvailableSelectOne}"
+                                           var="addedClassItem"
+                                           itemValue="#{addedClassItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateStudentAddClassLabel_student}" for="student" />
+                        <p:selectOneMenu id="student" value="#{studentAddClassController.selected.student}" required="true" requiredMessage="#{bundle.EditStudentAddClassRequiredMessage_student}">
+                            <f:selectItems value="#{studentController.itemsAvailableSelectOne}"
+                                           var="studentItem"
+                                           itemValue="#{studentItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{studentAddClassController.create}" value="#{bundle.Save}" update="display,:StudentAddClassListForm:datalist,:growl" oncomplete="handleSubmit(args,'StudentAddClassCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="StudentAddClassCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ProgramViewDlg" widgetVar="ProgramViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewProgramTitle}">
+            <h:form id="ProgramViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{programController.selected != null}">
+                        <h:outputText value="#{bundle.ViewProgramLabel_id}"/>
+                        <h:outputText value="#{programController.selected.id}" title="#{bundle.ViewProgramTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewProgramLabel_programName}"/>
+                        <h:outputText value="#{programController.selected.programName}" title="#{bundle.ViewProgramTitle_programName}"/>
+                        <h:outputText value="#{bundle.ViewProgramLabel_programLevel}"/>
+                        <h:outputText value="#{programController.selected.programLevel}" title="#{bundle.ViewProgramTitle_programLevel}"/>
+                        <h:outputText value="#{bundle.ViewProgramLabel_maxYearOfStudy}"/>
+                        <h:outputText value="#{programController.selected.maxYearOfStudy}" title="#{bundle.ViewProgramTitle_maxYearOfStudy}"/>
+                        <h:outputText value="#{bundle.ViewProgramLabel_department}"/>
+                        <h:outputText value="#{programController.selected.department}" title="#{bundle.ViewProgramTitle_department}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="ProgramViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

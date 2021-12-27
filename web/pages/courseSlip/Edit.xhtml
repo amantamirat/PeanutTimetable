@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CourseSlipEditDlg" widgetVar="CourseSlipEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditCourseSlipTitle}">
+            <h:form id="CourseSlipEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{courseSlipController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditCourseSlipLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{courseSlipController.selected.id}" title="#{bundle.EditCourseSlipTitle_id}" required="true" requiredMessage="#{bundle.EditCourseSlipRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditCourseSlipLabel_block}" for="block" />
+                        <p:selectBooleanCheckbox id="block" value="#{courseSlipController.selected.block}" required="true" requiredMessage="#{bundle.EditCourseSlipRequiredMessage_block}"/>
+                        <p:outputLabel value="#{bundle.EditCourseSlipLabel_eventStyle}" for="eventStyle" />
+                        <p:inputText id="eventStyle" value="#{courseSlipController.selected.eventStyle}" title="#{bundle.EditCourseSlipTitle_eventStyle}" required="true" requiredMessage="#{bundle.EditCourseSlipRequiredMessage_eventStyle}"/>
+                        <p:outputLabel value="#{bundle.EditCourseSlipLabel_activeBatch}" for="activeBatch" />
+                        <p:selectOneMenu id="activeBatch" value="#{courseSlipController.selected.activeBatch}" required="true" requiredMessage="#{bundle.EditCourseSlipRequiredMessage_activeBatch}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{activeBatchController.itemsAvailableSelectOne}"
+                                           var="activeBatchItem"
+                                           itemValue="#{activeBatchItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditCourseSlipLabel_course}" for="course" />
+                        <p:selectOneMenu id="course" value="#{courseSlipController.selected.course}" required="true" requiredMessage="#{bundle.EditCourseSlipRequiredMessage_course}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{courseController.itemsAvailableSelectOne}"
+                                           var="courseItem"
+                                           itemValue="#{courseItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditCourseSlipLabel_courseSlip}" for="courseSlip" />
+                        <p:selectOneMenu id="courseSlip" value="#{courseSlipController.selected.courseSlip}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{courseSlipController.itemsAvailableSelectOne}"
+                                           var="courseSlipItem"
+                                           itemValue="#{courseSlipItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditCourseSlipLabel_preBlock}" for="preBlock" />
+                        <p:selectOneMenu id="preBlock" value="#{courseSlipController.selected.preBlock}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{courseSlipController.itemsAvailableSelectOne}"
+                                           var="preBlockItem"
+                                           itemValue="#{preBlockItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{courseSlipController.update}" value="#{bundle.Save}" update="display,:CourseSlipListForm:datalist,:growl" oncomplete="handleSubmit(args, 'CourseSlipEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="CourseSlipEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

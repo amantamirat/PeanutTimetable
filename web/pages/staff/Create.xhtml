@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="StaffCreateDlg" widgetVar="StaffCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateStaffTitle}">
+            <h:form id="StaffCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{staffController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateStaffLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{staffController.selected.id}" title="#{bundle.CreateStaffTitle_id}" required="true" requiredMessage="#{bundle.CreateStaffRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreateStaffLabel_fullName}" for="fullName" />
+                        <p:inputText id="fullName" value="#{staffController.selected.fullName}" title="#{bundle.CreateStaffTitle_fullName}" required="true" requiredMessage="#{bundle.CreateStaffRequiredMessage_fullName}"/>
+                        <p:outputLabel value="#{bundle.CreateStaffLabel_sex}" for="sex" />
+                        <p:inputText id="sex" value="#{staffController.selected.sex}" title="#{bundle.CreateStaffTitle_sex}" required="true" requiredMessage="#{bundle.CreateStaffRequiredMessage_sex}"/>
+                        <p:outputLabel value="#{bundle.CreateStaffLabel_academicRank}" for="academicRank" />
+                        <p:inputText id="academicRank" value="#{staffController.selected.academicRank}" title="#{bundle.CreateStaffTitle_academicRank}" required="true" requiredMessage="#{bundle.CreateStaffRequiredMessage_academicRank}"/>
+                        <p:outputLabel value="#{bundle.CreateStaffLabel_employedDate}" for="employedDate" />
+                        <p:calendar id="employedDate" pattern="MM/dd/yyyy" value="#{staffController.selected.employedDate}" title="#{bundle.EditStaffTitle_employedDate}" required="true" requiredMessage="#{bundle.EditStaffRequiredMessage_employedDate}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateStaffLabel_department}" for="department" />
+                        <p:selectOneMenu id="department" value="#{staffController.selected.department}" required="true" requiredMessage="#{bundle.EditStaffRequiredMessage_department}">
+                            <f:selectItems value="#{departmentController.itemsAvailableSelectOne}"
+                                           var="departmentItem"
+                                           itemValue="#{departmentItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{staffController.create}" value="#{bundle.Save}" update="display,:StaffListForm:datalist,:growl" oncomplete="handleSubmit(args,'StaffCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="StaffCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

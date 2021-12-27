@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListProgramTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="ProgramListForm">
+                <p:panel header="#{bundle.ListProgramTitle}">
+                    <p:dataTable id="datalist" value="#{programController.items}" var="item"
+                                 selectionMode="single" selection="#{programController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 widgetVar="programTable"
+                                 rowIndexVar="rowIndex"
+                                 >
+                        <f:facet name="header">
+                                <div class="products-table-header">
+                                    <span style="font-weight: bold">Programs</span>
+
+                                    <span class="filter-container ui-input-icon-left">
+                                        <i class="pi pi-search"></i>
+                                        <p:inputText id="globalFilter" onkeyup="PF('programTable').filter()" placeholder="Search"/>
+                                    </span>
+
+                                </div>
+                            </f:facet>
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column width="5%">
+                            <f:facet name="header">
+                                <h:outputText  value="#"/>
+                            </f:facet>
+                            <h:outputText value="#{rowIndex+1}"/>
+                        </p:column>
+                        
+                        <p:column sortBy="#{item.department.departmentName}" filterBy="#{item.department.departmentName}">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListProgramTitle_department}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.department.departmentName}"/>
+                        </p:column>
+                        
+                        <p:column sortBy="#{item.programName}" filterBy="#{item.programName}">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListProgramTitle_programName}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.programName}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.programName}" filterBy="#{item.programName}">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListProgramTitle_programLevel}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.programLevel}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.programClassification}" filterBy="#{item.programClassification}">
+                            <f:facet name="header">
+                                <h:outputText value="Classfication"/>
+                            </f:facet>
+                            <h:outputText value="#{item.programClassification}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.maxYearOfStudy}" filterBy="#{item.maxYearOfStudy}">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListProgramTitle_maxYearOfStudy}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.maxYearOfStudy}"/>
+                        </p:column>
+                        
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{programController.prepareCreate}" update=":ProgramCreateForm" oncomplete="PF('ProgramCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":ProgramViewForm" oncomplete="PF('ProgramViewDialog').show()" disabled="#{empty programController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":ProgramEditForm" oncomplete="PF('ProgramEditDialog').show()" disabled="#{empty programController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{programController.destroy}" update=":growl,datalist" disabled="#{empty programController.selected}" onsuccess="PF('programTable').filter()">
+                                <p:confirm header="#{bundle.ConfirmationHeader}" message="#{bundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+                <ui:include src="/confirmation.xhtml"/>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

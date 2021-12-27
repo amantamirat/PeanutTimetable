@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ActiveBatchEditDlg" widgetVar="ActiveBatchEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditActiveBatchTitle}">
+            <h:form id="ActiveBatchEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{activeBatchController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditActiveBatchLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{activeBatchController.selected.id}" title="#{bundle.EditActiveBatchTitle_id}" required="true" requiredMessage="#{bundle.EditActiveBatchRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditActiveBatchLabel_academicCalendar}" for="academicCalendar" />
+                        <p:selectOneMenu id="academicCalendar" value="#{activeBatchController.selected.academicCalendar}" required="true" requiredMessage="#{bundle.EditActiveBatchRequiredMessage_academicCalendar}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{academicCalendarController.itemsAvailableSelectOne}"
+                                           var="academicCalendarItem"
+                                           itemValue="#{academicCalendarItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditActiveBatchLabel_batch}" for="batch" />
+                        <p:selectOneMenu id="batch" value="#{activeBatchController.selected.batch}" required="true" requiredMessage="#{bundle.EditActiveBatchRequiredMessage_batch}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{batchController.itemsAvailableSelectOne}"
+                                           var="batchItem"
+                                           itemValue="#{batchItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{activeBatchController.update}" value="#{bundle.Save}" update="display,:ActiveBatchListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ActiveBatchEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ActiveBatchEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
