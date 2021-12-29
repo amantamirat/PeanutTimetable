@@ -22,20 +22,21 @@ import javax.validation.ConstraintViolationException;
  * @author Amanuel
  */
 public abstract class AbstractController<T> implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     private AbstractFacade<T> ejbFacade;
     private Class<T> itemClass;
     private T selected;
     private Collection<T> items;
-    
+
     public AbstractController() {
     }
 
     public AbstractController(Class<T> itemClass) {
         this.itemClass = itemClass;
     }
-    
+
     /**
      * Initialize the concrete controller bean. This AbstractController requires
      * the EJB Facade object for most operations, and that task is performed by
@@ -92,10 +93,11 @@ public abstract class AbstractController<T> implements Serializable {
     protected void setEmbeddableKeys() {
         // Nothing to do if entity does not have any embeddable key.
     }
+
     /**
      * Sets the concrete embedded key of an Entity that uses composite keys.
-     * This method will be overridden inside concrete controller classes and does
-     * nothing if the specific entity has no composite keys.
+     * This method will be overridden inside concrete controller classes and
+     * does nothing if the specific entity has no composite keys.
      */
     protected void initializeEmbeddableKey() {
         // Nothing to do if entity does not have any embeddable key.
@@ -122,6 +124,18 @@ public abstract class AbstractController<T> implements Serializable {
         this.items = items;
     }
 
+    public T getItem(java.lang.Integer id) {
+        return getFacade().find(id);
+    }
+
+    public Collection<T> getItemsAvailableSelectMany() {
+        return getFacade().findAll();
+    }
+
+    public Collection<T> getItemsAvailableSelectOne() {
+        return getFacade().findAll();
+    }
+
     /**
      * Creates a new instance of an underlying entity and assigns it to Selected
      * property.
@@ -138,7 +152,7 @@ public abstract class AbstractController<T> implements Serializable {
         }
         return null;
     }
-    
+
     /**
      * Performs any data modification actions for an entity. The actions that
      * can be performed by this method are controlled by the
@@ -155,7 +169,7 @@ public abstract class AbstractController<T> implements Serializable {
             try {
                 if (persistAction != PersistAction.DELETE) {
                     this.ejbFacade.edit(selected);
-                    
+
                 } else {
                     this.ejbFacade.remove(selected);
                 }
@@ -183,7 +197,7 @@ public abstract class AbstractController<T> implements Serializable {
             }
         }
     }
-    
+
     /**
      * Remove an existing item from the data layer.
      */
@@ -195,11 +209,11 @@ public abstract class AbstractController<T> implements Serializable {
             items = null; // Invalidate list of items to trigger re-query.            
         }
     }
-    
+
     /**
      * Store a new item in the data layer.
      *
-     
+     *
      */
     public void create() {
         String msg = ResourceBundle.getBundle("/Bundle").getString(itemClass.getSimpleName() + "Created");
@@ -208,7 +222,7 @@ public abstract class AbstractController<T> implements Serializable {
             items = null; // Invalidate list of items to trigger re-query.           
         }
     }
-    
+
     /**
      * Apply changes to an existing item to the data layer.
      *
@@ -217,5 +231,5 @@ public abstract class AbstractController<T> implements Serializable {
         String msg = ResourceBundle.getBundle("/Bundle").getString(itemClass.getSimpleName() + "Updated");
         persist(PersistAction.UPDATE, msg);
     }
-    
+
 }

@@ -49,15 +49,14 @@
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="Registred Batch"/>
-                            </f:facet>
+                            </f:facet>                            
                             <h:outputText value="#{item.batch.toString()}"/>
-                        </p:column>
-                        
+                        </p:column>                        
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Year Batch"/>
+                                <h:outputText value="Year Level"/>
                             </f:facet>
-                            <h:outputText value="#{item.yearLevel}"/>
+                            <h:outputText value="#{item.relativeYearLevel}"/>
                         </p:column>
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{activeBatchController.prepareCreate}" update=":ActiveBatchCreateForm" oncomplete="PF('ActiveBatchCreateDialog').show()"/>

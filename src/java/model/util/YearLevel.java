@@ -14,14 +14,14 @@ import model.Batch;
  */
 public enum YearLevel {
 
-    First("First Year"),
-    Second("Second Year"),
-    Third("Third Year"),
-    Fourth("Fourth Year"),
-    Fifth("Fifth Year"),
-    Sixth("Sixth Year"),
-    Seventh("Seventh Year"),
-    Undefined("Undefined");
+    First("(First Year)"),
+    Second("(Second Year)"),
+    Third("(Third Year)"),
+    Fourth("(Fourth Year)"),
+    Fifth("(Fifth Year)"),
+    Sixth("(Sixth Year)"),
+    Seventh("(Seventh Year)"),
+    Undefined("Undefined Illegal Batch");
     public final String shortTerm;
 
     private YearLevel(String shortTerm) {
@@ -40,6 +40,5 @@ public enum YearLevel {
         }
         return YearLevel.Undefined;
     }
-    
-    
+
 }

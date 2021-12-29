@@ -68,7 +68,7 @@
                             </p:panel>
                         </p:tab>
                         <p:tab id="batches" title="Batches">
-                            <p:panel header="Select Bathes of the Academic Calendar">
+                            <p:panel header="Select Batches of the Academic Calendar #{academicCalendarController.selected.toString()}">
                                 <div class="card">                                   
                                     <p:pickList id="myPickList" 
                                                 value="#{academicCalendarController.dualBatches}" 
@@ -79,16 +79,13 @@
                                                 showTargetControls="true" showCheckbox="true"
                                                 showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains"
                                                 responsive="true" 
-                                                converter="entityConverter">                                                                             
+                                                converter="entityConverter">                                                                           
 
 
                                         <f:facet name="sourceCaption">Available</f:facet>
                                         <f:facet name="targetCaption">Starting</f:facet>
 
-                                        <p:ajax event="transfer" listener="#{academicCalendarController.onTransfer}" update=":growl"/>
-                                        <p:ajax event="select" listener="#{academicCalendarController.onSelect}" update=":growl"/>
-                                        <p:ajax event="unselect" listener="#{academicCalendarController.onUnselect}" update=":growl"/>
-                                        <p:ajax event="reorder" listener="#{academicCalendarController.onReorder}" update=":growl"/>
+                                        <p:ajax event="transfer" listener="#{academicCalendarController.onTransfer}" update=":growl"/>                                        
 
                                         <p:column style="border-bottom:1px solid lightgray">
                                             <p:panelGrid>

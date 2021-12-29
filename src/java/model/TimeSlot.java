@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -35,7 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TimeSlot.findAll", query = "SELECT t FROM TimeSlot t"),
     @NamedQuery(name = "TimeSlot.findById", query = "SELECT t FROM TimeSlot t WHERE t.id = :id"),
     @NamedQuery(name = "TimeSlot.findByDayOfWeek", query = "SELECT t FROM TimeSlot t WHERE t.dayOfWeek = :dayOfWeek"),
-    @NamedQuery(name = "TimeSlot.findByPeriod", query = "SELECT t FROM TimeSlot t WHERE t.period = :period"),
+    @NamedQuery(name = "TimeSlot.findByPeriod", query = "SELECT t FROM TimeSlot t WHERE t.slotPeriod = :slotPeriod"),
     @NamedQuery(name = "TimeSlot.findByStartTime", query = "SELECT t FROM TimeSlot t WHERE t.startTime = :startTime"),
     @NamedQuery(name = "TimeSlot.findByEndTime", query = "SELECT t FROM TimeSlot t WHERE t.endTime = :endTime")})
 public class TimeSlot implements Serializable {
@@ -52,8 +54,8 @@ public class TimeSlot implements Serializable {
     private int dayOfWeek;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "period")
-    private int period;
+    @Column(name = "slot_period")
+    private Integer slotPeriod;
     @Basic(optional = false)
     @NotNull
     @Column(name = "start_time")
@@ -64,6 +66,9 @@ public class TimeSlot implements Serializable {
     @Column(name = "end_time")
     @Temporal(TemporalType.TIME)
     private Date endTime;
+    @JoinColumn(name = "time_conf", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TimePeriodConf timeConf;
     @OneToMany(mappedBy = "timeSlot")
     private Collection<ClassSchedule> classScheduleCollection;
 
@@ -74,10 +79,10 @@ public class TimeSlot implements Serializable {
         this.id = id;
     }
 
-    public TimeSlot(Integer id, int dayOfWeek, int period, Date startTime, Date endTime) {
+    public TimeSlot(Integer id, int dayOfWeek, int slotPeriod, Date startTime, Date endTime) {
         this.id = id;
         this.dayOfWeek = dayOfWeek;
-        this.period = period;
+        this.slotPeriod = slotPeriod;
         this.startTime = startTime;
         this.endTime = endTime;
     }
@@ -98,13 +103,13 @@ public class TimeSlot implements Serializable {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public int getPeriod() {
-        return period;
+    public Integer getSlotPeriod() {
+        return slotPeriod;
     }
 
-    public void setPeriod(int period) {
-        this.period = period;
-    }
+    public void setSlotPeriod(Integer slotPeriod) {
+        this.slotPeriod = slotPeriod;
+    }    
 
     public Date getStartTime() {
         return startTime;
@@ -121,6 +126,15 @@ public class TimeSlot implements Serializable {
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
+
+    public TimePeriodConf getTimeConf() {
+        return timeConf;
+    }
+
+    public void setTimeConf(TimePeriodConf timePeriodConf) {
+        this.timeConf = timePeriodConf;
+    }  
+    
 
     @XmlTransient
     public Collection<ClassSchedule> getClassScheduleCollection() {

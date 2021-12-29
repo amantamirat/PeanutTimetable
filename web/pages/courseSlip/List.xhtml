@@ -101,11 +101,11 @@
 
 
 
-                            <p:column sortBy="#{item.activeBatch.batch.toString()}" filterBy="#{item.activeBatch.batch.toString()}">
+                            <p:column sortBy="#{item.activeBatch}" filterBy="#{item.activeBatch}">
                                 <f:facet name="header">
                                     <h:outputText value="#{bundle.ListCourseSlipTitle_activeBatch}"/>
                                 </f:facet>
-                                <h:outputText value="#{item.activeBatch.batch.toString()}"/>
+                                <h:outputText value="#{item.activeBatch.toString()}"/>
                             </p:column>
                             <p:column sortBy="#{item.course.courseTitle}" filterBy="#{item.course.courseTitle}">
                                 <f:facet name="header">

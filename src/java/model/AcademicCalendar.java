@@ -45,6 +45,7 @@ import model.util.Semester;
     @NamedQuery(name = "AcademicCalendar.findByClassEndDate", query = "SELECT a FROM AcademicCalendar a WHERE a.classEndDate = :classEndDate"),
     @NamedQuery(name = "AcademicCalendar.findByExamStartDate", query = "SELECT a FROM AcademicCalendar a WHERE a.examStartDate = :examStartDate"),
     @NamedQuery(name = "AcademicCalendar.findByExamEndDate", query = "SELECT a FROM AcademicCalendar a WHERE a.examEndDate = :examEndDate"),
+    @NamedQuery(name = "AcademicCalendar.findSimillarAcademicCalendar", query = "SELECT a FROM AcademicCalendar a WHERE a.academicYear = :academicYear AND a.semester = :semester"),
     @NamedQuery(name = "AcademicCalendar.findOverlapped", query = "SELECT a FROM AcademicCalendar a WHERE a.classStartDate <= :endDate AND a.classStartDate >= :startDate"),})
 public class AcademicCalendar implements Serializable {
 

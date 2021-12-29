@@ -23,60 +23,62 @@
             <pe:layoutPane position="north" size="75" resizable="true" closable="true"  styleHeader="#{bundle.AppName}">
                 <div class="card">
                     <h:form id="menuForm">
-                    <p:menubar>
-                        <p:menuitem value="#{bundle.Home}" outcome="/index" icon="pi pi-fw pi-home"/>
-                        <p:submenu label="#{bundle.Timetable}" icon="pi pi-fw pi-calendar">
-                            <p:menuitem value="AcademicCalendar" outcome="/pages/academicCalendar/List.xhtml" />
-                            <p:menuitem value="ActiveBatch" outcome="/pages/activeBatch/List.xhtml" />
-                            <p:menuitem value="TimeSlot" outcome="/pages/timeSlot/List.xhtml" />
-                        </p:submenu>
-                        <p:submenu label="#{bundle.Schedule}">                            
-                            <p:menuitem value="ClassSchedule" outcome="/pages/classSchedule/List.xhtml" icon="pi pi-fw pi-calendar-times" />                      
-                        </p:submenu>
-                        <p:submenu label="#{bundle.RoomAllocation}">                                
-                            <p:menuitem value="CollegeRoom" outcome="/pages/collegeRoom/List.xhtml" />
-                            <p:menuitem value="DepartmentRoom" outcome="/pages/departmentRoom/List.xhtml" />
-                            <p:menuitem value="SectionRoom" outcome="/pages/sectionRoom/List.xhtml" />
-                            <p:menuitem value="CourseRoom" outcome="/pages/courseRoom/List.xhtml" />
-                        </p:submenu>                           
+                        <p:menubar>
+                            <p:menuitem value="#{bundle.Home}" outcome="/index" icon="pi pi-fw pi-home"/>
+                            <p:submenu label="#{bundle.Timetable}" icon="pi pi-fw pi-calendar">
+                                <p:menuitem value="AcademicCalendar" outcome="/pages/academicCalendar/List.xhtml" />
+                                <p:menuitem value="ActiveBatch" outcome="/pages/activeBatch/List.xhtml" />
+                                <p:menuitem value="TimeSlot" outcome="/pages/timeSlot/List.xhtml" />
+                            </p:submenu>
+                            <p:submenu label="#{bundle.Schedule}">                            
+                                <p:menuitem value="ClassSchedule" outcome="/pages/classSchedule/List.xhtml" icon="pi pi-fw pi-calendar-times" />                      
+                            </p:submenu>
+                            <p:submenu label="#{bundle.RoomAllocation}">                                
+                                <p:menuitem value="CollegeRoom" outcome="/pages/collegeRoom/List.xhtml" />
+                                <p:menuitem value="DepartmentRoom" outcome="/pages/departmentRoom/List.xhtml" />
+                                <p:menuitem value="SectionRoom" outcome="/pages/sectionRoom/List.xhtml" />
+                                <p:menuitem value="CourseRoom" outcome="/pages/courseRoom/List.xhtml" />
+                            </p:submenu>                           
 
-                        <p:submenu label="#{bundle.Class}">                            
-                            <p:menuitem value="CourseSlip" outcome="/pages/courseSlip/List.xhtml" /> 
-                            <p:menuitem value="SectionClass" outcome="/pages/sectionClass/List.xhtml" />
-                            <p:menuitem value="StaffClass" outcome="/pages/staffClass/List.xhtml" />                                
-                            <p:menuitem value="StudentAddClass" outcome="/pages/studentAddClass/List.xhtml" />
-                            <p:menuitem value="StudentDropClass" outcome="/pages/studentDropClass/List.xhtml" />                                
-                        </p:submenu>
-                        <p:submenu label="Core">
-                            <p:menuitem value="College" outcome="/pages/college/List.xhtml" />
-                            <p:menuitem value="Department" outcome="/pages/department/index.xhtml" />
-                            <p:menuitem value="Program" outcome="/pages/program/List.xhtml" />
-                            <p:menuitem value="Batch" outcome="/pages/batch/List.xhtml" />
-                            <p:separator/>
-                            <p:menuitem value="Section" outcome="/pages/section/List.xhtml" />
-                            <p:menuitem value="SectionLabGroup" outcome="/pages/sectionLabGroup/List.xhtml" />
-                            <p:separator/>
-                            <p:menuitem value="Course" outcome="/pages/course/List.xhtml" /> 
-                            <p:menuitem value="Staff" outcome="/pages/staff/List.xhtml" />
-                            <p:menuitem value="Room" outcome="/pages/room/List.xhtml" />                                
-                            <p:menuitem value="Student" outcome="/pages/student/List.xhtml" />
-                        </p:submenu>
-                        <p:submenu label="#{bundle.User}" icon="pi pi-fw pi-users" >                            
-                            <p:menuitem value="User" outcome="/pages/user/List.xhtml" icon="ui-icon-eye"/>
-                        </p:submenu>
-                        <p:menuitem value="Quit" icon="pi pi-fw pi-power-off"/>
+                            <p:submenu label="#{bundle.Class}">                            
+                                <p:menuitem value="CourseSlip" outcome="/pages/courseSlip/List.xhtml" /> 
+                                <p:menuitem value="SectionClass" outcome="/pages/sectionClass/List.xhtml" />
+                                <p:menuitem value="StaffClass" outcome="/pages/staffClass/List.xhtml" />                                
+                                <p:menuitem value="StudentAddClass" outcome="/pages/studentAddClass/List.xhtml" />
+                                <p:menuitem value="StudentDropClass" outcome="/pages/studentDropClass/List.xhtml" />                                
+                            </p:submenu>
+                            <p:submenu label="Core">
+                                <p:menuitem value="College" outcome="/pages/college/List.xhtml" />
+                                <p:menuitem value="Department" outcome="/pages/department/index.xhtml" />
+                                <p:menuitem value="Program" outcome="/pages/program/List.xhtml" />
+                                <p:separator/>
+                                <p:menuitem value="Course" outcome="/pages/course/List.xhtml" /> 
+                                <p:menuitem value="Staff" outcome="/pages/staff/List.xhtml" />
+                                <p:menuitem value="Room" outcome="/pages/room/List.xhtml" /> 
+                                <p:separator/>
+                                <p:menuitem value="Batch" outcome="/pages/batch/List.xhtml" />
+                                <p:separator/>
+                                <p:menuitem value="Section" outcome="/pages/section/List.xhtml" />
+                                <p:menuitem value="SectionLabGroup" outcome="/pages/sectionLabGroup/List.xhtml" />
+                                <p:separator/>                               
+                                <p:menuitem value="Student" outcome="/pages/student/List.xhtml" />
+                            </p:submenu>
+                            <p:submenu label="#{bundle.User}" icon="pi pi-fw pi-users" >                            
+                                <p:menuitem value="User" outcome="/pages/user/List.xhtml" icon="ui-icon-eye"/>
+                            </p:submenu>
+                            <p:menuitem value="Quit" icon="pi pi-fw pi-power-off"/>
 
-                        <f:facet name="options">
-                            <div class="ui-input-icon-left p-mr-2">
-                                <i class="pi pi-fw pi-search" />
-                                <p:inputText placeholder="Search"/>
-                            </div>
-                            <p:button value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
-                        </f:facet>
-                    </p:menubar>
-                </h:form>
+                            <f:facet name="options">
+                                <div class="ui-input-icon-left p-mr-2">
+                                    <i class="pi pi-fw pi-search" />
+                                    <p:inputText placeholder="Search"/>
+                                </div>
+                                <p:button value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
+                            </f:facet>
+                        </p:menubar>
+                    </h:form>
                 </div>
-                
+
 
             </pe:layoutPane>
 

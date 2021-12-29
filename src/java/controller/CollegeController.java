@@ -28,19 +28,9 @@ public class CollegeController extends AbstractController<College> {
     @Override
     public void init() {
         super.setFacade(ejbFacade);
-    }    
+    }     
 
-    public College getCollege(java.lang.Integer id) {
-        return getFacade().find(id);
-    }
-
-    public List<College> getItemsAvailableSelectMany() {
-        return getFacade().findAll();
-    }
-
-    public List<College> getItemsAvailableSelectOne() {
-        return getFacade().findAll();
-    }
+    
 
     @FacesConverter(forClass = College.class)
     public static class CollegeControllerConverter implements Converter {
@@ -52,7 +42,7 @@ public class CollegeController extends AbstractController<College> {
             }
             CollegeController controller = (CollegeController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "collegeController");
-            return controller.getCollege(getKey(value));
+            return controller.getItem(getKey(value));
         }
 
         java.lang.Integer getKey(String value) {

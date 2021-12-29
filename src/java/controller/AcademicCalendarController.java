@@ -16,9 +16,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import model.Batch;
 import org.primefaces.event.FlowEvent;
-import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TransferEvent;
-import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DualListModel;
 
 
@@ -59,24 +57,8 @@ public class AcademicCalendarController extends AbstractController<AcademicCalen
         return event.getNewStep();
     }
 
-    public void onTransfer(TransferEvent event) {
-        StringBuilder builder = new StringBuilder();        
-        for (Object item : event.getItems()) {
-            builder.append(((Batch) item).toString()).append("<br />");
-        }
-        JsfUtil.addSuccessMessage("Transferred Batches", builder.toString());
-    }
-
-    public void onSelect(SelectEvent<Batch> event) {
-        JsfUtil.addSuccessMessage("Selected Batch", event.getObject().toString());
-    }
-
-    public void onUnselect(UnselectEvent<Batch> event) {
-        JsfUtil.addSuccessMessage("Batch Unselected", event.getObject().toString());
-    }
-
-    public void onReorder() {
-        JsfUtil.addSuccessMessage("List Reordered", null);
+    public void onTransfer(TransferEvent event) {        
+        JsfUtil.addSuccessMessage("Batch Transferred!");
     }
 
     public DualListModel<Batch> getDualBatches() {

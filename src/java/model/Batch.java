@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Batch.findAll", query = "SELECT b FROM Batch b"),
     @NamedQuery(name = "Batch.findById", query = "SELECT b FROM Batch b WHERE b.id = :id"),
     @NamedQuery(name = "Batch.findByEntranceYear", query = "SELECT b FROM Batch b WHERE b.entranceYear = :entranceYear"),
+    @NamedQuery(name = "Batch.findByProgram_and_EntranceYear", query = "SELECT b FROM Batch b WHERE b.program.id = :programId AND b.entranceYear = :entranceYear"),
     @NamedQuery(name = "Batch.findBatchesByDates", query = "SELECT a.batch FROM ActiveBatch a WHERE a.academicCalendar.classStartDate <= :endDate AND a.academicCalendar.classStartDate >= :startDate")})
 public class Batch implements Serializable {
 
@@ -141,7 +142,7 @@ public class Batch implements Serializable {
 
     @Override
     public String toString() {
-        return program.toString() + " " + entranceYear;
+        return program.toString()+ " " + entranceYear +(this.id == null ? " [New]" : " ");
     }
 
 }

@@ -1,17 +1,10 @@
 package controller;
 
 import model.Program;
-import controller.util.JsfUtil;
-import controller.util.JsfUtil.PersistAction;
-import ejb.ProgramFacade;
-
-import java.io.Serializable;
-import java.util.List;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.EJBException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -21,105 +14,20 @@ import javax.faces.convert.FacesConverter;
 
 @Named("programController")
 @SessionScoped
-public class ProgramController implements Serializable {
+public class ProgramController extends AbstractController<Program> {
 
     @EJB
     private ejb.ProgramFacade ejbFacade;
-    private List<Program> items = null;
-    private Program selected;
 
     public ProgramController() {
+        super(Program.class);
     }
 
-    public Program getSelected() {
-        return selected;
-    }
-
-    public void setSelected(Program selected) {
-        this.selected = selected;
-    }
-
-    protected void setEmbeddableKeys() {
-    }
-
-    protected void initializeEmbeddableKey() {
-    }
-
-    private ProgramFacade getFacade() {
-        return ejbFacade;
-    }
-
-    public Program prepareCreate() {
-        selected = new Program();
-        initializeEmbeddableKey();
-        return selected;
-    }
-
-    public void create() {
-        persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("ProgramCreated"));
-        if (!JsfUtil.isValidationFailed()) {
-            items = null;    // Invalidate list of items to trigger re-query.
-        }
-    }
-
-    public void update() {
-        persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("ProgramUpdated"));
-    }
-
-    public void destroy() {
-        persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("ProgramDeleted"));
-        if (!JsfUtil.isValidationFailed()) {
-            selected = null; // Remove selection
-            items = null;    // Invalidate list of items to trigger re-query.
-        }
-    }
-
-    public List<Program> getItems() {
-        if (items == null) {
-            items = getFacade().findAll();
-        }
-        return items;
-    }
-
-    private void persist(PersistAction persistAction, String successMessage) {
-        if (selected != null) {
-            setEmbeddableKeys();
-            try {
-                if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
-                } else {
-                    getFacade().remove(selected);
-                }
-                JsfUtil.addSuccessMessage(successMessage);
-            } catch (EJBException ex) {
-                String msg = "";
-                Throwable cause = ex.getCause();
-                if (cause != null) {
-                    msg = cause.getLocalizedMessage();
-                }
-                if (msg.length() > 0) {
-                    JsfUtil.addErrorMessage(msg);
-                } else {
-                    JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-                JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            }
-        }
-    }
-
-    public Program getProgram(java.lang.Integer id) {
-        return getFacade().find(id);
-    }
-
-    public List<Program> getItemsAvailableSelectMany() {
-        return getFacade().findAll();
-    }
-
-    public List<Program> getItemsAvailableSelectOne() {
-        return getFacade().findAll();
-    }
+    @PostConstruct
+    @Override
+    public void init() {
+        super.setFacade(ejbFacade);
+    }    
 
     @FacesConverter(forClass = Program.class)
     public static class ProgramControllerConverter implements Converter {
@@ -131,7 +39,7 @@ public class ProgramController implements Serializable {
             }
             ProgramController controller = (ProgramController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "programController");
-            return controller.getProgram(getKey(value));
+            return controller.getItem(getKey(value));
         }
 
         java.lang.Integer getKey(String value) {

@@ -7,6 +7,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import javax.annotation.PostConstruct;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,8 +23,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
-import javax.persistence.PostPersist;
-import javax.persistence.PostUpdate;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -55,13 +56,10 @@ public class ActiveBatch implements Serializable {
     @JoinColumn(name = "batch", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Batch batch;
-//    @Basic(optional = true)
-//    @NotNull
-//    @Column(name = "relative_year_level")
-//    @Enumerated(EnumType.ORDINAL)
-//    private YearLevel relativeYearLevel;    
+    @Basic(optional = true)
+    @Column(name = "relative_year_level")
     @Enumerated(EnumType.ORDINAL)
-    private transient YearLevel yearLevel;
+    private YearLevel relativeYearLevel;
 
     public ActiveBatch() {
     }
@@ -70,11 +68,11 @@ public class ActiveBatch implements Serializable {
         this.id = id;
     }
 
-    @PostPersist
-    @PostUpdate
+    @PrePersist
+    @PreUpdate
     @PostLoad
     private void initializeYearLevel() {
-        yearLevel = YearLevel.computeYearLevel(academicCalendar, batch);
+        relativeYearLevel = YearLevel.computeYearLevel(academicCalendar, batch);
     }
 
     public Integer getId() {
@@ -110,15 +108,15 @@ public class ActiveBatch implements Serializable {
         this.batch = batch;
     }
 
-//    public YearLevel getRelativeYearLevel() {
-//        return relativeYearLevel;
-//    }
-//
-//    public void setRelativeYearLevel(YearLevel relativeYearLevel) {
-//        this.relativeYearLevel = relativeYearLevel;
-//    }
-    public YearLevel getYearLevel() {
-        return yearLevel;
+    public YearLevel getRelativeYearLevel() {
+        if (relativeYearLevel == null) {
+            initializeYearLevel();
+        }
+        return relativeYearLevel;
+    }
+
+    public void setRelativeYearLevel(YearLevel relativeYearLevel) {
+        this.relativeYearLevel = relativeYearLevel;
     }
 
     @Override
@@ -143,7 +141,7 @@ public class ActiveBatch implements Serializable {
 
     @Override
     public String toString() {
-        return batch.getProgram()+ " " + yearLevel.shortTerm;
+        return this.batch.toString() + " " + relativeYearLevel.shortTerm;
     }
 
 }

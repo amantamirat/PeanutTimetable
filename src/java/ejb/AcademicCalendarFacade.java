@@ -53,18 +53,28 @@ public class AcademicCalendarFacade extends AbstractFacade<AcademicCalendar> {
      */
     public List<Batch> prepareValidBatches(AcademicCalendar ac) {
         List<Batch> batchs = new ArrayList<>();
+        List<Batch> overlappedBatchs = bf.findOverlappedBatches(ac.getClassStartDate(), ac.getExamEndDate());
         int acYear = Integer.parseInt(ac.getAcademicYear().substring(0, 4));
         for (Program p : pf.findValidPrograms(ac.getSemester())) {
             for (int y = p.getMinYearOfStudy() - 1; y < p.getMaxYearOfStudy(); y++) {
-                Batch b = new Batch();
-                b.setProgram(p);
                 String entranceYear = Integer.toString(acYear - y);
                 entranceYear = entranceYear + "/" + Integer.toString(Integer.parseInt(entranceYear.substring(2, 4)) + 1);
-                b.setEntranceYear(entranceYear);
-                batchs.add(b);
+                Batch b = bf.findBatch(p.getId(), entranceYear);
+                if (b == null) {
+                    b = new Batch();
+                    b.setProgram(p);
+                    b.setEntranceYear(entranceYear);
+                }
+                if (!overlappedBatchs.contains(b)) {
+                    batchs.add(b);
+                }
             }
         }
-        batchs.removeAll(bf.findOverlappedBatches(ac.getClassStartDate(), ac.getExamEndDate()));
+        for (AcademicCalendar calendar : findSimillarAcademicCalendars(ac)) {
+            for (ActiveBatch batch : calendar.getActiveBatchCollection()) {
+                batchs.remove(batch.getBatch());
+            }
+        }
         return batchs;
     }
 
@@ -94,6 +104,10 @@ public class AcademicCalendarFacade extends AbstractFacade<AcademicCalendar> {
      */
     private List<AcademicCalendar> findOverlappedAcademicCalendars(Date startDate, Date endDate) {
         return (List<AcademicCalendar>) getEntityManager().createNamedQuery("AcademicCalendar.findOverlapped").setParameter("startDate", startDate).setParameter("endDate", endDate).getResultList();
+    }
+
+    private List<AcademicCalendar> findSimillarAcademicCalendars(AcademicCalendar calendar) {
+        return (List<AcademicCalendar>) getEntityManager().createNamedQuery("AcademicCalendar.findSimillarAcademicCalendar").setParameter("academicYear", calendar.getAcademicYear()).setParameter("semester", calendar.getSemester()).getResultList();
     }
 
 }

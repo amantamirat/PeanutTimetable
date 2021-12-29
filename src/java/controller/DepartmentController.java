@@ -1,18 +1,11 @@
 package controller;
 
 import model.Department;
-import controller.util.JsfUtil;
-import controller.util.JsfUtil.PersistAction;
-import ejb.DepartmentFacade;
-
-import java.io.Serializable;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.EJBException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -35,19 +28,9 @@ public class DepartmentController extends AbstractController<Department>{
     @Override
     public void init() {
         super.setFacade(ejbFacade);
-    } 
+    }   
 
-    public Department getDepartment(java.lang.Integer id) {
-        return getFacade().find(id);
-    }
-
-    public List<Department> getItemsAvailableSelectMany() {
-        return getFacade().findAll();
-    }
-
-    public List<Department> getItemsAvailableSelectOne() {
-        return getFacade().findAll();
-    }
+    
 
     @FacesConverter(forClass = Department.class)
     public static class DepartmentControllerConverter implements Converter {
@@ -59,7 +42,7 @@ public class DepartmentController extends AbstractController<Department>{
             }
             DepartmentController controller = (DepartmentController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "departmentController");
-            return controller.getDepartment(getKey(value));
+            return controller.getItem(getKey(value));
         }
 
         java.lang.Integer getKey(String value) {
