@@ -7,7 +7,6 @@ package model;
 
 import java.io.Serializable;
 import java.util.Collection;
-import javax.annotation.PostConstruct;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -141,7 +140,7 @@ public class ActiveBatch implements Serializable {
 
     @Override
     public String toString() {
-        return this.batch.toString() + " " + relativeYearLevel.shortTerm;
+        return this.batch.toString() + " " + getRelativeYearLevel().shortTerm;
     }
 
 }

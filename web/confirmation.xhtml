@@ -4,7 +4,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
 
-    <p:confirmDialog global="true">  
+    <p:confirmDialog global="true" header="Confirm?" message="This affects other data!" >  
         <p:commandButton value="#{bundle.Yes}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
         <p:commandButton value="#{bundle.No}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
     </p:confirmDialog>

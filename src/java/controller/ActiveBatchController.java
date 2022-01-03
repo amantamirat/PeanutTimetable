@@ -121,7 +121,7 @@ public class ActiveBatchController implements Serializable {
         return getFacade().findAll();
     }
 
-    @FacesConverter(value = "activeBatchConverter",forClass = ActiveBatch.class)
+    @FacesConverter(forClass = ActiveBatch.class)
     public static class ActiveBatchControllerConverter implements Converter {
 
         @Override

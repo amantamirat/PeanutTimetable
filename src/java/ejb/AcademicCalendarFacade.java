@@ -23,19 +23,19 @@ import model.Program;
  */
 @Stateless
 public class AcademicCalendarFacade extends AbstractFacade<AcademicCalendar> {
-
+    
     @PersistenceContext(unitName = "Peanu3PU")
     private EntityManager em;
     @EJB
     private ProgramFacade pf;
     @EJB
     private BatchFacade bf;
-
+    
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-
+    
     public AcademicCalendarFacade() {
         super(AcademicCalendar.class);
     }
@@ -51,7 +51,7 @@ public class AcademicCalendarFacade extends AbstractFacade<AcademicCalendar> {
      * Academic Calendar should be active (Not implemented though).
      * </p>
      */
-    public List<Batch> prepareValidBatches(AcademicCalendar ac) {
+    public List<ActiveBatch> prepareValidBatches(AcademicCalendar ac) {
         List<Batch> batchs = new ArrayList<>();
         List<Batch> overlappedBatchs = bf.findOverlappedBatches(ac.getClassStartDate(), ac.getExamEndDate());
         int acYear = Integer.parseInt(ac.getAcademicYear().substring(0, 4));
@@ -74,8 +74,15 @@ public class AcademicCalendarFacade extends AbstractFacade<AcademicCalendar> {
             for (ActiveBatch batch : calendar.getActiveBatchCollection()) {
                 batchs.remove(batch.getBatch());
             }
+        }        
+        List<ActiveBatch> abs = new ArrayList<>();
+        for (Batch b : batchs) {
+            ActiveBatch ab = new ActiveBatch();
+            ab.setAcademicCalendar(ac);
+            ab.setBatch(b);
+            abs.add(ab);
         }
-        return batchs;
+        return abs;
     }
 
     /**
@@ -105,9 +112,9 @@ public class AcademicCalendarFacade extends AbstractFacade<AcademicCalendar> {
     private List<AcademicCalendar> findOverlappedAcademicCalendars(Date startDate, Date endDate) {
         return (List<AcademicCalendar>) getEntityManager().createNamedQuery("AcademicCalendar.findOverlapped").setParameter("startDate", startDate).setParameter("endDate", endDate).getResultList();
     }
-
+    
     private List<AcademicCalendar> findSimillarAcademicCalendars(AcademicCalendar calendar) {
         return (List<AcademicCalendar>) getEntityManager().createNamedQuery("AcademicCalendar.findSimillarAcademicCalendar").setParameter("academicYear", calendar.getAcademicYear()).setParameter("semester", calendar.getSemester()).getResultList();
     }
-
+    
 }

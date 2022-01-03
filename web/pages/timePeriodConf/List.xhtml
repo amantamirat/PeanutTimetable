@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListTimePeriodConfTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="TimePeriodConfListForm">
+                <p:panel header="#{bundle.ListTimePeriodConfTitle}">
+                    <p:toolbar>
+                        <p:toolbarGroup>
+                            <p:commandButton id="createButton" 
+                                             icon="ui-icon-plus"   
+                                             value="#{bundle.Create} New" 
+                                             actionListener="#{timePeriodConfController.prepareCreate}" 
+                                             update=":TimePeriodConfCreateForm" 
+                                             oncomplete="PF('TimePeriodConfCreateDialog').show()"
+                                             style="margin-right: .5rem">
+                                <p:resetInput target=":TimePeriodConfCreateForm"/>
+                            </p:commandButton>                         
+
+                        </p:toolbarGroup>
+                        <p:toolbarGroup align="right">
+                            <p:fileUpload mode="simple" skinSimple="true" label="Import" chooseIcon="pi pi-download"/>
+                            <p:commandButton value="Export" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+                                <p:dataExporter type="xml" target="datalist" fileName="conf"/>
+                            </p:commandButton>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+
+
+                    <p:dataTable id="datalist" 
+                                 value="#{timePeriodConfController.items}" 
+                                 var="item"
+                                 selectionMode="single" 
+                                 selection="#{timePeriodConfController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 rowIndexVar="rowIndex"
+                                 >
+                        <f:facet name="header">
+                            Expand rows to see Slot information.
+                        </f:facet>                        
+
+                        <p:column style="width:2rem">
+                            <p:rowToggler/>
+                        </p:column>
+
+                        <p:column width="5%">
+                            <f:facet name="header">
+                                <h:outputText  value="No"/>
+                            </f:facet>
+                            <h:outputText value="#{rowIndex+1}"/>
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Configuration"/>
+                            </f:facet>
+                            <h:outputText value="#{item.toString()}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTimePeriodConfTitle_selectedDays}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.selectedDays}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTimePeriodConfTitle_minStartTime}"/>
+                            </f:facet>                            
+                            <h:outputText value="#{item.minStartTime}">
+                                <f:convertDateTime pattern="HH:mm" type="localTime"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTimePeriodConfTitle_maxStartTime}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.maxEndTime}">
+                                <f:convertDateTime pattern="HH:mm" type="localTime"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTimePeriodConfTitle_slotDuration}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.slotDuration}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTimePeriodConfTitle_slotInterval}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.slotInterval}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTimePeriodConfTitle_timeZone}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.timeZone}"/>
+                        </p:column>
+
+                        <p:column exportable="false">
+                            <p:commandButton icon="pi pi-pencil" update=":TimePeriodConfEditForm"
+                                             oncomplete="PF('TimePeriodConfEditDialog').show()"
+                                             styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                <f:setPropertyActionListener value="#{item}" target="#{timePeriodConfController.selected}"/>
+                                <p:resetInput target=":TimePeriodConfEditForm"/>
+                            </p:commandButton>
+                            <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" actionListener="#{timePeriodConfController.remove(item)}" update=":growl,:TimePeriodConfListForm:datalist">
+                                <p:confirm header="#{bundle.ConfirmationHeader}" message="#{bundle.ConfirmDeleteMessage}" icon="ui-icon-alert" />
+                            </p:commandButton>                           
+                        </p:column>
+
+                        <p:rowExpansion>
+                            <p:dataTable id="slotDatalist" 
+                                         value="#{item.timeSlotCollection}" 
+                                         var="slot"
+                                         paginator="true"
+                                         rowKey="#{slot.id}"
+                                         rows="5"
+                                         rowsPerPageTemplate="5,10,15"  
+                                         paginatorPosition="bottom"
+                                         sortMode="multiple"
+                                         sortBy="#{timePeriodConfController.sortBy}"
+                                         >                  
+                                <p:column field="dayOfWeek" filterable="false">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListTimeSlotTitle_dayOfWeek}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{slot.dayOfWeek}"/>
+                                </p:column>
+                                <p:column field="slotPeriod" filterable="false">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListTimeSlotTitle_period}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{slot.slotPeriod}"/>
+                                </p:column>
+                                <p:column field="startTime" sortable="true">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListTimeSlotTitle_startTime}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{slot.startTime}">
+                                        <f:convertDateTime pattern="HH:mm" type="localTime" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column field="endTime" sortable="true">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListTimeSlotTitle_endTime}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{slot.endTime}">
+                                        <f:convertDateTime pattern="HH:mm" type="localTime" />
+                                    </h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                        </p:rowExpansion>
+
+                        <f:facet name="footer">
+
+                        </f:facet>
+                    </p:dataTable>                 
+                </p:panel> 
+                <ui:include src="/confirmation.xhtml"/>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

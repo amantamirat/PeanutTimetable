@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TimePeriodConfViewDlg" widgetVar="TimePeriodConfViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewTimePeriodConfTitle}">
+            <h:form id="TimePeriodConfViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{timePeriodConfController.selected != null}">
+                        <h:outputText value="#{bundle.ViewTimePeriodConfLabel_id}"/>
+                        <h:outputText value="#{timePeriodConfController.selected.id}" title="#{bundle.ViewTimePeriodConfTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewTimePeriodConfLabel_selectedDays}"/>
+                        <h:outputText value="#{timePeriodConfController.selected.selectedDays}" title="#{bundle.ViewTimePeriodConfTitle_selectedDays}"/>
+                        <h:outputText value="#{bundle.ViewTimePeriodConfLabel_minStartTime}"/>
+                        <h:outputText value="#{timePeriodConfController.selected.minStartTime}" title="#{bundle.ViewTimePeriodConfTitle_minStartTime}">
+                                                        <f:convertDateTime pattern="HH:mm" type="localTime"/>
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewTimePeriodConfLabel_maxStartTime}"/>
+                        <h:outputText value="#{timePeriodConfController.selected.maxEndTime}" title="#{bundle.ViewTimePeriodConfTitle_maxStartTime}">
+                            <f:convertDateTime pattern="HH:mm" type="localTime"/>
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewTimePeriodConfLabel_slotDuration}"/>
+                        <h:outputText value="#{timePeriodConfController.selected.slotDuration}" title="#{bundle.ViewTimePeriodConfTitle_slotDuration}"/>
+                        <h:outputText value="#{bundle.ViewTimePeriodConfLabel_slotInterval}"/>
+                        <h:outputText value="#{timePeriodConfController.selected.slotInterval}" title="#{bundle.ViewTimePeriodConfTitle_slotInterval}"/>
+                        <h:outputText value="#{bundle.ViewTimePeriodConfLabel_timeZone}"/>
+                        <h:outputText value="#{timePeriodConfController.selected.timeZone}" title="#{bundle.ViewTimePeriodConfTitle_timeZone}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="TimePeriodConfViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

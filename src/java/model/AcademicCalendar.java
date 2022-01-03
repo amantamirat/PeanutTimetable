@@ -6,8 +6,10 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,9 +26,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import model.util.ProgramClassification;
 import model.util.Semester;
 
 /**
@@ -57,7 +61,8 @@ public class AcademicCalendar implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 7)
+    @Size(min = 7, max = 7)
+    @Pattern(regexp = "([0-9]{4}[\\/][0-9]{2})")
     @Column(name = "academic_year")
     private String academicYear;
     @Basic(optional = false)
@@ -65,6 +70,10 @@ public class AcademicCalendar implements Serializable {
     @Column(name = "semester")
     @Enumerated(EnumType.ORDINAL)
     private Semester semester;
+    @Size(min = 4, max = 4)
+    @Pattern(regexp = "([0-1]{4})")
+    @Column(name = "selected_classfications")
+    private String selectedClassfications;
     @Basic(optional = false)
     @NotNull
     @Column(name = "class_start_date")
@@ -87,7 +96,6 @@ public class AcademicCalendar implements Serializable {
     private Date examEndDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "academicCalendar")
     private Collection<ActiveBatch> activeBatchCollection;
-    
 
     public AcademicCalendar() {
     }
@@ -130,6 +138,14 @@ public class AcademicCalendar implements Serializable {
         this.semester = semester;
     }
 
+    public String getSelectedClassfications() {
+        return selectedClassfications;
+    }
+
+    public void setSelectedClassfications(String selectedClassfications) {
+        this.selectedClassfications = selectedClassfications;
+    }
+
     public Date getClassStartDate() {
         return classStartDate;
     }
@@ -160,8 +176,7 @@ public class AcademicCalendar implements Serializable {
 
     public void setExamEndDate(Date examEndDate) {
         this.examEndDate = examEndDate;
-    }    
-    
+    }
 
     @XmlTransient
     public Collection<ActiveBatch> getActiveBatchCollection() {
@@ -215,6 +230,24 @@ public class AcademicCalendar implements Serializable {
     @Override
     public String toString() {
         return this.academicYear + " " + this.semester.getShortTerm();
+    }
+
+    public static String convertToClassficationFlag(List<ProgramClassification> selectedClassfications) {
+        StringBuilder sb = new StringBuilder(4);
+        for (ProgramClassification pc : ProgramClassification.values()) {
+            sb.append(selectedClassfications.contains(pc) ? "1" : "0");
+        }
+        return sb.toString();
+    }
+
+    public static List<ProgramClassification> convertToSelectedClassifications(String selectedClassfications) {
+        List<ProgramClassification> classifications = new ArrayList<>();
+        for (int i = 0; i < selectedClassfications.length(); i++) {
+            if (selectedClassfications.charAt(i) == '1') {
+                classifications.add(ProgramClassification.values()[i]);
+            }
+        }
+        return classifications;
     }
 
 }

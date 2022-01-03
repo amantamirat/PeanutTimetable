@@ -21,8 +21,11 @@
                                            itemValue="#{programItem}"/>
                         </p:selectOneMenu>                        
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{batchController.create}" value="#{bundle.Save}" update="display,:BatchListForm:datalist,:growl" oncomplete="handleSubmit(args,'BatchCreateDialog');"/>
-                    <p:commandButton value="#{bundle.Cancel}" onclick="BatchCreateDialog.hide()"/>
+                    <p:commandButton actionListener="#{batchController.create}" value="#{bundle.Save}" 
+                                     update="display,:BatchListForm:datalist,:growl" 
+                                     oncomplete="handleSubmit(xhr,status,args,PF('BatchCreateDialog'));" 
+                                     onsuccess="PF('batchTable').filter()"/>
+                    <p:commandButton value="#{bundle.Cancel}" oncomplete="PF('BatchCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
                 </h:panelGroup>
             </h:form>
         </p:dialog>

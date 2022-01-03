@@ -12,8 +12,18 @@
             <h:outputText value="#{bundle.AppName}"></h:outputText>
         </ui:define>
 
-        <ui:define name="body">
-            Welcome 
+        <ui:define name="body">            
+
+            <div class="card" align="center">
+                <style type="text/css">
+                    .ui-analog-clock {
+                        width: 75px;                    
+                    }
+                </style>
+                <h:form>
+                    <p:clock displayMode="analog"/>
+                </h:form>
+            </div>
         </ui:define>
     </ui:composition>
 

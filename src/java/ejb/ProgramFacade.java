@@ -11,7 +11,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import model.Department;
 import model.Program;
 import model.util.ProgramClassification;
 import model.util.ProgramLevel;
@@ -50,8 +49,7 @@ public class ProgramFacade extends AbstractFacade<Program> {
     public void edit(Program entity) {
         Program simillarProgram = findSimillarProgram(entity.getProgramName(), entity.getProgramLevel(), entity.getProgramClassification());
         if (simillarProgram == null || simillarProgram.equals(entity) || simillarProgram.isClosed()) {
-            super.edit(entity);
-            return;
+             super.edit(entity);
         }
         throw new EJBException("First Close The Existing Simillar Program!");
     }

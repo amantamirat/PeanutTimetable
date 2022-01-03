@@ -5,6 +5,9 @@
  */
 package controller.util;
 
+
+import java.sql.Date;
+import java.time.DayOfWeek;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import model.util.ProgramClassification;
@@ -29,6 +32,10 @@ public class PeanutController {
 
     public ProgramLevel[] getProgramLevels() {
         return ProgramLevel.values();
+    }
+    
+    public DayOfWeek[] getDays(){
+        return DayOfWeek.values();
     }
 
 }

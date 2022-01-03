@@ -7,8 +7,6 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:o="http://omnifaces.org/ui">
 
-
-
     <ui:composition>
         <p:dialog id="AcademicCalendarCreateDlg" widgetVar="AcademicCalendarCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateAcademicCalendarTitle}" minHeight="150" minWidth="800" showEffect="fade" minimizable="true" maximizable="true">
             <div class="card">
@@ -33,6 +31,23 @@
                                             </p:selectOneMenu> 
                                         </div>
                                     </div>
+                                    <div class="p-field p-grid">
+                                        <h:outputLabel value="Select Classfications:" for="selectedClassfications" />
+                                        <h:panelGroup>                                       
+                                            <p:selectCheckboxMenu id="selectedClassfications" 
+                                                                  value="#{academicCalendarController.selectedClassifications}"                                                                  
+                                                                  label="..Select Classfications.."
+                                                                  panelStyle="width:250px;height:100"
+                                                                  required="true"
+                                                                  requiredMessage="Classfication required!, Select at least one classfication">                                                
+                                                <f:selectItems value="#{peanutController.programClassifications}"
+                                                               var="c"
+                                                               itemValue="#{c}"
+                                                               itemLabel="#{c}"   />                                          
+                                            </p:selectCheckboxMenu>
+                                            <p:tooltip for="selectedClassfications" value="Select Classfications"/>
+                                        </h:panelGroup>
+                                    </div>                                    
                                 </div>                                
                             </p:panel>
                         </p:tab>
@@ -74,7 +89,7 @@
                                                 value="#{academicCalendarController.dualBatches}" 
                                                 var="batch"
                                                 itemValue="#{batch}" 
-                                                itemLabel="#{batch.toString()} #{batch.program.department.college.toString()}" 
+                                                itemLabel="#{batch.toString()} #{batch.batch.program.department.college.toString()}" 
                                                 showSourceControls="true"
                                                 showTargetControls="true" showCheckbox="true"
                                                 showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains"
@@ -98,7 +113,7 @@
                                                 <p:row>
                                                     <p:column style="padding:0">
                                                         <h:outputLabel
-                                                            value="#{batch.program.department.college.toString()}" />
+                                                            value="#{batch.batch.program.department.college.toString()}" />
                                                     </p:column>
                                                 </p:row>                        
                                             </p:panelGrid>

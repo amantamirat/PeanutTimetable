@@ -21,6 +21,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -48,7 +49,8 @@ public class Batch implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 7)
+    @Size(min = 7, max = 7)
+    @Pattern(regexp = "([0-9]{4}[\\/][0-9]{2})")
     @Column(name = "entrance_year")
     private String entranceYear;
     @JoinColumn(name = "program", referencedColumnName = "id")

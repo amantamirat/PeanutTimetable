@@ -101,7 +101,7 @@ public abstract class AbstractController<T> implements Serializable {
      */
     protected void initializeEmbeddableKey() {
         // Nothing to do if entity does not have any embeddable key.
-    }
+    }    
 
     /**
      * Returns all items as a Collection object.
@@ -169,7 +169,6 @@ public abstract class AbstractController<T> implements Serializable {
             try {
                 if (persistAction != PersistAction.DELETE) {
                     this.ejbFacade.edit(selected);
-
                 } else {
                     this.ejbFacade.remove(selected);
                 }
@@ -179,8 +178,8 @@ public abstract class AbstractController<T> implements Serializable {
                 if (cause != null) {
                     if (cause instanceof ConstraintViolationException) {
                         ConstraintViolationException excp = (ConstraintViolationException) cause;
-                        for (ConstraintViolation s : excp.getConstraintViolations()) {
-                            JsfUtil.addErrorMessage(s.getMessage());
+                        for (ConstraintViolation cv : excp.getConstraintViolations()) {
+                            JsfUtil.addErrorMessage(cv.getRootBeanClass().getSimpleName() + "." + cv.getPropertyPath() + " " + cv.getMessage());
                         }
                     } else {
                         String msg = cause.getLocalizedMessage();
@@ -219,7 +218,7 @@ public abstract class AbstractController<T> implements Serializable {
         String msg = ResourceBundle.getBundle("/Bundle").getString(itemClass.getSimpleName() + "Created");
         persist(PersistAction.CREATE, msg);
         if (!JsfUtil.isValidationFailed()) {
-            items = null; // Invalidate list of items to trigger re-query.           
+            items = null; // Invalidate list of items to trigger re-query.            
         }
     }
 

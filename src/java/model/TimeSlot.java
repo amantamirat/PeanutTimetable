@@ -6,11 +6,14 @@
 package model;
 
 import java.io.Serializable;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.Collection;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,8 +23,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -51,21 +52,20 @@ public class TimeSlot implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "day_of_week")
-    private int dayOfWeek;
+    @Enumerated(EnumType.ORDINAL)
+    private DayOfWeek dayOfWeek;
     @Basic(optional = false)
     @NotNull
     @Column(name = "slot_period")
     private Integer slotPeriod;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "start_time")
-    @Temporal(TemporalType.TIME)
-    private Date startTime;
+    @Column(name = "start_time", columnDefinition = "TIME")
+    private LocalTime startTime;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "end_time")
-    @Temporal(TemporalType.TIME)
-    private Date endTime;
+    @Column(name = "end_time", columnDefinition = "TIME")
+    private LocalTime endTime;
     @JoinColumn(name = "time_conf", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TimePeriodConf timeConf;
@@ -79,7 +79,14 @@ public class TimeSlot implements Serializable {
         this.id = id;
     }
 
-    public TimeSlot(Integer id, int dayOfWeek, int slotPeriod, Date startTime, Date endTime) {
+    public TimeSlot(DayOfWeek dayOfWeek, Integer slotPeriod, TimePeriodConf timeConf) {
+        this.dayOfWeek = dayOfWeek;
+        this.slotPeriod = slotPeriod;
+        this.timeConf = timeConf;
+    }  
+    
+
+    public TimeSlot(Integer id, DayOfWeek dayOfWeek, int slotPeriod, LocalTime startTime, LocalTime endTime) {
         this.id = id;
         this.dayOfWeek = dayOfWeek;
         this.slotPeriod = slotPeriod;
@@ -95,11 +102,11 @@ public class TimeSlot implements Serializable {
         this.id = id;
     }
 
-    public int getDayOfWeek() {
+    public DayOfWeek getDayOfWeek() {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(int dayOfWeek) {
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
 
@@ -109,21 +116,21 @@ public class TimeSlot implements Serializable {
 
     public void setSlotPeriod(Integer slotPeriod) {
         this.slotPeriod = slotPeriod;
-    }    
+    }
 
-    public Date getStartTime() {
+    public LocalTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public LocalTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
 
@@ -133,8 +140,7 @@ public class TimeSlot implements Serializable {
 
     public void setTimeConf(TimePeriodConf timePeriodConf) {
         this.timeConf = timePeriodConf;
-    }  
-    
+    }
 
     @XmlTransient
     public Collection<ClassSchedule> getClassScheduleCollection() {
@@ -143,7 +149,7 @@ public class TimeSlot implements Serializable {
 
     public void setClassScheduleCollection(Collection<ClassSchedule> classScheduleCollection) {
         this.classScheduleCollection = classScheduleCollection;
-    }
+    }    
 
     @Override
     public int hashCode() {
@@ -169,5 +175,5 @@ public class TimeSlot implements Serializable {
     public String toString() {
         return "model.TimeSlot[ id=" + id + " ]";
     }
-    
+
 }

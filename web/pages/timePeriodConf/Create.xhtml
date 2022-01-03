@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        <style type="text/css">            
+            .ui-datepicker-calendar {   }
+        </style>
+
+        <p:dialog id="TimePeriodConfCreateDlg" widgetVar="TimePeriodConfCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateTimePeriodConfTitle}">
+            <h:form id="TimePeriodConfCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{timePeriodConfController.selected != null}">
+                        <h:outputLabel value="Classfication" for="classfication" />
+                        <p:selectOneMenu id="classfication" 
+                                         value="#{timePeriodConfController.selected.classfication}"  
+                                         required="true" requiredMessage="Select Classfication it is Required">
+                            <f:selectItem itemLabel="..Select Classfication.." 
+                                          itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{peanutController.programClassifications}" />
+                        </p:selectOneMenu>
+                        <h:outputLabel value="Select Days:" for="selectedDays" />
+                        <h:panelGroup>                                       
+                            <p:selectCheckboxMenu id="selectedDays" value="#{timePeriodConfController.selectedDays}" label="Select Days"  
+                                                  filter="true"    panelStyle="width:250px;height:100"
+                                                  required="true">
+                                <f:selectItems value="#{peanutController.days}"
+                                               var="d"
+                                               itemValue="#{d}"
+                                               itemLabel="#{d}"                                               
+                                               />
+                            </p:selectCheckboxMenu>
+                            <p:tooltip for="selectedDays" value="Select Days"/>
+                        </h:panelGroup>
+                        <h:outputLabel value="#{bundle.CreateTimePeriodConfLabel_minStartTime}" for="minStartTime" />
+                        <pe:timePicker id="minStartTime" value="#{timePeriodConfController.selected.minStartTime}" style="width: 250px" required="true"/>
+                        <p:outputLabel value="#{bundle.CreateTimePeriodConfLabel_maxStartTime}" for="maxEndTime" />
+                        <pe:timePicker id="maxEndTime" value="#{timePeriodConfController.selected.maxEndTime}" style="width: 250px" required="true"/>
+                        <h:outputLabel value="#{bundle.CreateTimePeriodConfLabel_slotDuration}" for="slotDurationPanel"/>                       
+                        <h:panelGrid id="slotDurationPanel" columns="1" style="margin-bottom: 10px">
+                            <p:inputText id="slotDuration" value="#{timePeriodConfController.selected.slotDuration}" required="true"/>
+                            <p:slider for="slotDuration" step="10" minValue="20" maxValue="60" range="max"/>
+                        </h:panelGrid>
+                        <h:outputLabel value="#{bundle.CreateTimePeriodConfLabel_slotInterval}" for="slotIntervalPanel" />
+                        <h:panelGrid id="slotIntervalPanel" columns="1" style="margin-bottom: 10px">
+                            <p:inputText id="slotInterval" value="#{timePeriodConfController.selected.slotInterval}" required="true"/>
+                            <p:slider for="slotInterval" step="5" minValue="5" maxValue="20" range="max"/>
+                        </h:panelGrid>
+                        <h:outputLabel value="#{bundle.CreateTimePeriodConfLabel_timeZone}" for="timeZone" />
+                        <p:inputText id="timeZone" value="#{timePeriodConfController.selected.timeZone}" title="#{bundle.CreateTimePeriodConfTitle_timeZone}" required="false" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{timePeriodConfController.create}" value="#{bundle.Save}" 
+                                     update="display,:TimePeriodConfListForm:datalist,:growl" 
+                                     oncomplete="handleSubmit(xhr,status,args,PF('TimePeriodConfCreateDialog'));">                                     
+                        <p:confirm header="#{bundle.ConfirmationHeader}" message="#{bundle.ConfirmCreateMessage}" icon="ui-icon-info"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{bundle.Cancel}" oncomplete="PF('TimePeriodConfCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
