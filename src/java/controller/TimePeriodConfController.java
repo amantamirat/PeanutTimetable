@@ -1,5 +1,6 @@
 package controller;
 
+import controller.util.JsfUtil;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -86,6 +87,12 @@ public class TimePeriodConfController extends AbstractController<TimePeriodConf>
     public void remove(TimePeriodConf item) {
         setSelected(item);
         super.destroy();
+    }
+
+    public void updateDefault(TimePeriodConf item) {
+        ejbFacade.updateDefault(item);
+        setItems(null);
+        JsfUtil.addSuccessMessage(null, item.toString() + (item.isDefaultConfiguration() ? " marked as default" : " marked as non-default"));
     }
 
     @FacesConverter(forClass = TimePeriodConf.class)

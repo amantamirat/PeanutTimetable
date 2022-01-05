@@ -41,8 +41,7 @@
                     <p:dataTable id="datalist" 
                                  value="#{timePeriodConfController.items}" 
                                  var="item"
-                                 selectionMode="single" 
-                                 selection="#{timePeriodConfController.selected}"
+                                 selectionMode="single"                                  
                                  paginator="true"
                                  rowKey="#{item.id}"
                                  rows="10"
@@ -63,7 +62,7 @@
                             </f:facet>
                             <h:outputText value="#{rowIndex+1}"/>
                         </p:column>
-                        
+
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="Configuration"/>
@@ -112,6 +111,15 @@
                             <h:outputText value="#{item.timeZone}"/>
                         </p:column>
 
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Default"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{item.defaultConfiguration}">                               
+                                <p:ajax update=":growl,:TimePeriodConfListForm:datalist" listener="#{timePeriodConfController.updateDefault(item)}"/>
+                            </p:selectBooleanCheckbox>                           
+                        </p:column>
+
                         <p:column exportable="false">
                             <p:commandButton icon="pi pi-pencil" update=":TimePeriodConfEditForm"
                                              oncomplete="PF('TimePeriodConfEditDialog').show()"
@@ -119,52 +127,67 @@
                                 <f:setPropertyActionListener value="#{item}" target="#{timePeriodConfController.selected}"/>
                                 <p:resetInput target=":TimePeriodConfEditForm"/>
                             </p:commandButton>
-                            <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" actionListener="#{timePeriodConfController.remove(item)}" update=":growl,:TimePeriodConfListForm:datalist">
+                            <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" actionListener="#{timePeriodConfController.remove(item)}" 
+                                             update=":growl,:TimePeriodConfListForm:datalist">
                                 <p:confirm header="#{bundle.ConfirmationHeader}" message="#{bundle.ConfirmDeleteMessage}" icon="ui-icon-alert" />
                             </p:commandButton>                           
                         </p:column>
 
                         <p:rowExpansion>
-                            <p:dataTable id="slotDatalist" 
-                                         value="#{item.timeSlotCollection}" 
-                                         var="slot"
-                                         paginator="true"
-                                         rowKey="#{slot.id}"
-                                         rows="5"
-                                         rowsPerPageTemplate="5,10,15"  
-                                         paginatorPosition="bottom"
-                                         sortMode="multiple"
-                                         sortBy="#{timePeriodConfController.sortBy}"
-                                         >                  
-                                <p:column field="dayOfWeek" filterable="false">
-                                    <f:facet name="header">
-                                        <h:outputText value="#{bundle.ListTimeSlotTitle_dayOfWeek}"/>
-                                    </f:facet>
-                                    <h:outputText value="#{slot.dayOfWeek}"/>
-                                </p:column>
-                                <p:column field="slotPeriod" filterable="false">
-                                    <f:facet name="header">
-                                        <h:outputText value="#{bundle.ListTimeSlotTitle_period}"/>
-                                    </f:facet>
-                                    <h:outputText value="#{slot.slotPeriod}"/>
-                                </p:column>
-                                <p:column field="startTime" sortable="true">
-                                    <f:facet name="header">
-                                        <h:outputText value="#{bundle.ListTimeSlotTitle_startTime}"/>
-                                    </f:facet>
-                                    <h:outputText value="#{slot.startTime}">
-                                        <f:convertDateTime pattern="HH:mm" type="localTime" />
-                                    </h:outputText>
-                                </p:column>
-                                <p:column field="endTime" sortable="true">
-                                    <f:facet name="header">
-                                        <h:outputText value="#{bundle.ListTimeSlotTitle_endTime}"/>
-                                    </f:facet>
-                                    <h:outputText value="#{slot.endTime}">
-                                        <f:convertDateTime pattern="HH:mm" type="localTime" />
-                                    </h:outputText>
-                                </p:column>
-                            </p:dataTable>
+                            <div class="card">
+                                <p:accordionPanel widgetVar="basic">
+                                    <p:tab title="Time Slots">
+                                        <p:dataTable id="slotDatalist" 
+                                                     value="#{item.timeSlotCollection}" 
+                                                     var="slot"
+                                                     paginator="true"
+                                                     rowKey="#{slot.id}"
+                                                     rows="5"
+                                                     rowsPerPageTemplate="5,10,15"  
+                                                     paginatorPosition="bottom"
+                                                     sortMode="multiple"
+                                                     sortBy="#{timePeriodConfController.sortBy}"
+                                                     >                  
+                                            <p:column field="dayOfWeek" filterable="false">
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{bundle.ListTimeSlotTitle_dayOfWeek}"/>
+                                                </f:facet>
+                                                <h:outputText value="#{slot.dayOfWeek}"/>
+                                            </p:column>
+                                            <p:column field="slotPeriod" filterable="false">
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{bundle.ListTimeSlotTitle_period}"/>
+                                                </f:facet>
+                                                <h:outputText value="#{slot.slotPeriod}"/>
+                                            </p:column>
+                                            <p:column field="startTime" sortable="true">
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{bundle.ListTimeSlotTitle_startTime}"/>
+                                                </f:facet>
+                                                <h:outputText value="#{slot.startTime}">
+                                                    <f:convertDateTime pattern="HH:mm" type="localTime" />
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column field="endTime" sortable="true">
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{bundle.ListTimeSlotTitle_endTime}"/>
+                                                </f:facet>
+                                                <h:outputText value="#{slot.endTime}">
+                                                    <f:convertDateTime pattern="HH:mm" type="localTime" />
+                                                </h:outputText>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:tab>
+                                    <p:tab title="Academic Calendars">
+                                         <p class="p-m-0">
+                                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab
+                                            illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut
+                                            odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                                        </p>
+                                    </p:tab>
+                                </p:accordionPanel>
+                            </div>
+
                         </p:rowExpansion>
 
                         <f:facet name="footer">

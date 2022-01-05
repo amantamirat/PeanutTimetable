@@ -6,6 +6,8 @@
 package model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -60,6 +62,9 @@ public class AcademicCalendar implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
+    @Column(name = "academic_calendar_year", columnDefinition = "YEAR")
+    private LocalDate academicCalendarYear;
+    @Basic(optional = false)
     @NotNull
     @Size(min = 7, max = 7)
     @Pattern(regexp = "([0-9]{4}[\\/][0-9]{2})")
@@ -70,10 +75,6 @@ public class AcademicCalendar implements Serializable {
     @Column(name = "semester")
     @Enumerated(EnumType.ORDINAL)
     private Semester semester;
-    @Size(min = 4, max = 4)
-    @Pattern(regexp = "([0-1]{4})")
-    @Column(name = "selected_classfications")
-    private String selectedClassfications;
     @Basic(optional = false)
     @NotNull
     @Column(name = "class_start_date")
@@ -122,6 +123,14 @@ public class AcademicCalendar implements Serializable {
         this.id = id;
     }
 
+    public LocalDate getAcademicCalendarYear() {
+        return academicCalendarYear;
+    }
+
+    public void setAcademicCalendarYear(LocalDate academicCalendarYear) {
+        this.academicCalendarYear = academicCalendarYear;
+    }
+
     public String getAcademicYear() {
         return academicYear;
     }
@@ -136,14 +145,6 @@ public class AcademicCalendar implements Serializable {
 
     public void setSemester(Semester semester) {
         this.semester = semester;
-    }
-
-    public String getSelectedClassfications() {
-        return selectedClassfications;
-    }
-
-    public void setSelectedClassfications(String selectedClassfications) {
-        this.selectedClassfications = selectedClassfications;
     }
 
     public Date getClassStartDate() {
@@ -227,27 +228,13 @@ public class AcademicCalendar implements Serializable {
         return true;
     }
 
+    private String compeleteYear() {
+        return this.academicCalendarYear.getYear() + "/" + (this.academicCalendarYear.getYear() + 1);
+    }
+
     @Override
     public String toString() {
-        return this.academicYear + " " + this.semester.getShortTerm();
-    }
-
-    public static String convertToClassficationFlag(List<ProgramClassification> selectedClassfications) {
-        StringBuilder sb = new StringBuilder(4);
-        for (ProgramClassification pc : ProgramClassification.values()) {
-            sb.append(selectedClassfications.contains(pc) ? "1" : "0");
-        }
-        return sb.toString();
-    }
-
-    public static List<ProgramClassification> convertToSelectedClassifications(String selectedClassfications) {
-        List<ProgramClassification> classifications = new ArrayList<>();
-        for (int i = 0; i < selectedClassfications.length(); i++) {
-            if (selectedClassfications.charAt(i) == '1') {
-                classifications.add(ProgramClassification.values()[i]);
-            }
-        }
-        return classifications;
+        return this.compeleteYear() + " " + this.semester.getShortTerm();
     }
 
 }

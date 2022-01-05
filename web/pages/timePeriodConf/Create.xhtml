@@ -16,11 +16,11 @@
             <h:form id="TimePeriodConfCreateForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{timePeriodConfController.selected != null}">
-                        <h:outputLabel value="Classfication" for="classfication" />
+                        <h:outputLabel value="Classification" for="classification" />
                         <p:selectOneMenu id="classfication" 
-                                         value="#{timePeriodConfController.selected.classfication}"  
-                                         required="true" requiredMessage="Select Classfication it is Required">
-                            <f:selectItem itemLabel="..Select Classfication.." 
+                                         value="#{timePeriodConfController.selected.classification}"  
+                                         required="true" requiredMessage="Select Classification it is Required">
+                            <f:selectItem itemLabel="..Select Classification.." 
                                           itemValue="#{null}" noSelectionOption="true" />
                             <f:selectItems value="#{peanutController.programClassifications}" />
                         </p:selectOneMenu>

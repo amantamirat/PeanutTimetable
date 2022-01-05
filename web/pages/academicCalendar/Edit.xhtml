@@ -12,12 +12,13 @@
             <h:form id="AcademicCalendarEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{academicCalendarController.selected != null}">
-                        <p:outputLabel value="#{bundle.EditAcademicCalendarLabel_id}" for="id" />
-                        <p:inputText id="id" value="#{academicCalendarController.selected.id}" title="#{bundle.EditAcademicCalendarTitle_id}" required="true" requiredMessage="#{bundle.EditAcademicCalendarRequiredMessage_id}"/>
                         <p:outputLabel value="#{bundle.EditAcademicCalendarLabel_academicYear}" for="academicYear" />
-                        <p:inputText id="academicYear" value="#{academicCalendarController.selected.academicYear}" title="#{bundle.EditAcademicCalendarTitle_academicYear}" required="true" requiredMessage="#{bundle.EditAcademicCalendarRequiredMessage_academicYear}"/>
+                        <p:inputMask id="academicYear" value="#{academicCalendarController.selected.academicYear}" mask="9999/99" validateMask="true" title="#{bundle.CreateAcademicCalendarTitle_academicYear}" required="true" requiredMessage="#{bundle.CreateAcademicCalendarRequiredMessage_academicYear}"/>
                         <p:outputLabel value="#{bundle.EditAcademicCalendarLabel_semester}" for="semester" />
-                        <p:inputText id="semester" value="#{academicCalendarController.selected.semester}" title="#{bundle.EditAcademicCalendarTitle_semester}" required="true" requiredMessage="#{bundle.EditAcademicCalendarRequiredMessage_semester}"/>
+                        <p:selectOneMenu id="semester" value="#{academicCalendarController.selected.semester}"  required="true" requiredMessage="#{bundle.CreateAcademicCalendarRequiredMessage_semester}">
+                            <f:selectItem itemLabel="..Select Semester.." itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{peanutController.semesters}" />
+                        </p:selectOneMenu>
                         <p:outputLabel value="#{bundle.EditAcademicCalendarLabel_classStartDate}" for="classStartDate" />
                         <p:calendar id="classStartDate" pattern="MM/dd/yyyy" value="#{academicCalendarController.selected.classStartDate}" title="#{bundle.EditAcademicCalendarTitle_classStartDate}" required="true" requiredMessage="#{bundle.EditAcademicCalendarRequiredMessage_classStartDate}" showOn="button"/>
                         <p:outputLabel value="#{bundle.EditAcademicCalendarLabel_classEndDate}" for="classEndDate" />
@@ -27,8 +28,14 @@
                         <p:outputLabel value="#{bundle.EditAcademicCalendarLabel_examEndDate}" for="examEndDate" />
                         <p:calendar id="examEndDate" pattern="MM/dd/yyyy" value="#{academicCalendarController.selected.examEndDate}" title="#{bundle.EditAcademicCalendarTitle_examEndDate}" required="true" requiredMessage="#{bundle.EditAcademicCalendarRequiredMessage_examEndDate}" showOn="button"/>
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{academicCalendarController.update}" value="#{bundle.Save}" update="display,:AcademicCalendarListForm:datalist,:growl" oncomplete="handleSubmit(args, 'AcademicCalendarEditDialog');"/>
-                    <p:commandButton value="#{bundle.Cancel}" onclick="AcademicCalendarEditDialog.hide()"/>
+                    <p:commandButton actionListener="#{academicCalendarController.update}" 
+                                     value="#{bundle.Save}" 
+                                     update="display,:AcademicCalendarListForm:datalist,:growl" 
+                                     oncomplete="handleSubmit(xhr,status,args,PF('AcademicCalendarEditDialog'));"                                                  
+                                     style="margin-right: .9rem"/>
+                    <p:commandButton value="#{bundle.Cancel}"
+                                     oncomplete="PF('AcademicCalendarEditDialog').hide()" 
+                                     update="display" process="@this" immediate="true" resetValues="true"/>                    
                 </h:panelGroup>
             </h:form>
         </p:dialog>

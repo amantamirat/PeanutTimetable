@@ -30,24 +30,7 @@
                                                 <f:selectItems value="#{peanutController.semesters}" />
                                             </p:selectOneMenu> 
                                         </div>
-                                    </div>
-                                    <div class="p-field p-grid">
-                                        <h:outputLabel value="Select Classfications:" for="selectedClassfications" />
-                                        <h:panelGroup>                                       
-                                            <p:selectCheckboxMenu id="selectedClassfications" 
-                                                                  value="#{academicCalendarController.selectedClassifications}"                                                                  
-                                                                  label="..Select Classfications.."
-                                                                  panelStyle="width:250px;height:100"
-                                                                  required="true"
-                                                                  requiredMessage="Classfication required!, Select at least one classfication">                                                
-                                                <f:selectItems value="#{peanutController.programClassifications}"
-                                                               var="c"
-                                                               itemValue="#{c}"
-                                                               itemLabel="#{c}"   />                                          
-                                            </p:selectCheckboxMenu>
-                                            <p:tooltip for="selectedClassfications" value="Select Classfications"/>
-                                        </h:panelGroup>
-                                    </div>                                    
+                                    </div>                                                                  
                                 </div>                                
                             </p:panel>
                         </p:tab>
@@ -84,6 +67,7 @@
                         </p:tab>
                         <p:tab id="batches" title="Batches">
                             <p:panel header="Select Batches of the Academic Calendar #{academicCalendarController.selected.toString()}">
+                                <p:messages/>
                                 <div class="card">                                   
                                     <p:pickList id="myPickList" 
                                                 value="#{academicCalendarController.dualBatches}" 
@@ -98,7 +82,7 @@
 
 
                                         <f:facet name="sourceCaption">Available</f:facet>
-                                        <f:facet name="targetCaption">Starting</f:facet>
+                                        <f:facet name="targetCaption">Selected</f:facet>
 
                                         <p:ajax event="transfer" listener="#{academicCalendarController.onTransfer}" update=":growl"/>                                        
 
@@ -125,9 +109,57 @@
                         </p:tab>
 
                         <p:tab id="confirm" title="Confirmation">
-                            <p:panel header="Confirmation">
-                                <p:commandButton actionListener="#{academicCalendarController.create}" value="#{bundle.Save}" update="display,:AcademicCalendarListForm:datalist,:growl" oncomplete="handleSubmit(args,'AcademicCalendarCreateDialog');"/>
-                                <p:commandButton value="#{bundle.Cancel}" onclick="AcademicCalendarCreateDialog.hide()"/>
+
+
+                            <p:panel header="Confirmation" rendered="#{academicCalendarController.selected != null}">
+                                <p:messages/>
+                                <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
+
+                                    <h:panelGrid columns="2" columnClasses="label, value">
+                                        <h:outputText value="#{bundle.ViewAcademicCalendarLabel_academicYear}"/>
+                                        <h:outputText value="#{academicCalendarController.selected.academicYear}" title="#{bundle.ViewAcademicCalendarTitle_academicYear}"
+                                                      styleClass="outputLabel"/>
+
+                                        <h:outputText value="#{bundle.ViewAcademicCalendarLabel_semester}"/>
+                                        <h:outputText value="#{academicCalendarController.selected.semester}" title="#{bundle.ViewAcademicCalendarTitle_semester}" styleClass="outputLabel"/>
+                                    </h:panelGrid>
+
+                                    <h:panelGrid columns="2" columnClasses="label, value">
+                                        <h:outputText value="#{bundle.ViewAcademicCalendarLabel_classStartDate}"/>
+                                        <h:outputText value="#{academicCalendarController.selected.classStartDate}" title="#{bundle.ViewAcademicCalendarTitle_classStartDate}">
+                                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                                        </h:outputText>
+                                        <h:outputText value="#{bundle.ViewAcademicCalendarLabel_classEndDate}"/>
+                                        <h:outputText value="#{academicCalendarController.selected.classEndDate}" title="#{bundle.ViewAcademicCalendarTitle_classEndDate}">
+                                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                                        </h:outputText>
+                                    </h:panelGrid>
+
+                                    <h:panelGrid columns="2" columnClasses="label, value">
+                                        <h:outputText value="#{bundle.ViewAcademicCalendarLabel_examStartDate}"/>
+                                        <h:outputText value="#{academicCalendarController.selected.examStartDate}" title="#{bundle.ViewAcademicCalendarTitle_examStartDate}">
+                                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                                        </h:outputText>
+                                        <h:outputText value="#{bundle.ViewAcademicCalendarLabel_examEndDate}"/>
+                                        <h:outputText value="#{academicCalendarController.selected.examEndDate}" title="#{bundle.ViewAcademicCalendarTitle_examEndDate}">
+                                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                                        </h:outputText>
+                                    </h:panelGrid>
+
+                                    <h:panelGrid columns="2" columnClasses="label, value">
+                                        <h:outputText value="Number of Batches"/>
+                                        <h:outputText value="#{academicCalendarController.dualBatches.target.size()}" title="Size of Batches"/> 
+                                    </h:panelGrid>
+
+                                </h:panelGrid>
+                                <p:commandButton actionListener="#{academicCalendarController.create}" 
+                                                 value="#{bundle.Save}" 
+                                                 update="display,:AcademicCalendarListForm:datalist,:growl" 
+                                                 oncomplete="handleSubmit(xhr,status,args,PF('AcademicCalendarCreateDialog'));"                                                  
+                                                 style="margin-right: .9rem"/>
+                                <p:commandButton value="#{bundle.Cancel}"
+                                                 oncomplete="PF('AcademicCalendarCreateDialog').hide()" 
+                                                 update="display" process="@this" immediate="true" resetValues="true"/>
                             </p:panel>
                         </p:tab>
                     </p:wizard>                

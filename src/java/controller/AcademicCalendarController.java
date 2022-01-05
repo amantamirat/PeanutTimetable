@@ -2,7 +2,6 @@ package controller;
 
 import controller.util.JsfUtil;
 import java.util.ArrayList;
-import java.util.List;
 import model.AcademicCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,7 +14,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import model.ActiveBatch;
-import model.util.ProgramClassification;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
@@ -26,8 +24,6 @@ public class AcademicCalendarController extends AbstractController<AcademicCalen
     
     @EJB
     private ejb.AcademicCalendarFacade ejbFacade;
-    
-    private List<ProgramClassification> selectedClassifications;
     
     private DualListModel<ActiveBatch> dualBatches;
     
@@ -48,28 +44,27 @@ public class AcademicCalendarController extends AbstractController<AcademicCalen
                 JsfUtil.addErrorMessage("Invalid Academic Year!");
                 return "basic";
             }
-            getSelected().setSelectedClassfications(AcademicCalendar.convertToClassficationFlag(this.selectedClassifications));
         } else if ("batches".equals(event.getNewStep())) {
             if (!getSelected().checkDates()) {
                 JsfUtil.addErrorMessage("Invalid Date Setup!");
                 return "dates";
             }
-            dualBatches.setSource(ejbFacade.prepareValidBatches(getSelected()));
-            dualBatches.getTarget().clear();
+            if ("dates".equals(event.getOldStep())) {
+                dualBatches.setSource(ejbFacade.prepareValidBatches(getSelected()));
+                dualBatches.getTarget().clear();
+            }
+        } else if ("confirm".equals(event.getNewStep())) {
+            if (dualBatches.getTarget().isEmpty()) {                
+                JsfUtil.addErrorMessage("Please select bathes for this academic calendar!");
+                return "batches";
+            }
+            getSelected().setActiveBatchCollection(dualBatches.getTarget());
         }
         return event.getNewStep();
     }
     
     public void onTransfer(TransferEvent event) {
         JsfUtil.addSuccessMessage("Batch Transferred!");
-    }
-    
-    public List<ProgramClassification> getSelectedClassifications() {        
-        return selectedClassifications;
-    }
-    
-    public void setSelectedClassifications(List<ProgramClassification> selectedClassifications) {
-        this.selectedClassifications = selectedClassifications;
     }
     
     public DualListModel<ActiveBatch> getDualBatches() {
@@ -80,8 +75,9 @@ public class AcademicCalendarController extends AbstractController<AcademicCalen
         this.dualBatches = dualBatches;
     }
     
-    public AcademicCalendar getAcademicCalendar(java.lang.Integer id) {
-        return getFacade().find(id);
+    public void remove(AcademicCalendar item) {
+        setSelected(item);
+        super.destroy();
     }
     
     @FacesConverter(forClass = AcademicCalendar.class)
@@ -94,7 +90,7 @@ public class AcademicCalendarController extends AbstractController<AcademicCalen
             }
             AcademicCalendarController controller = (AcademicCalendarController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "academicCalendarController");
-            return controller.getAcademicCalendar(getKey(value));
+            return controller.getItem(getKey(value));
         }
         
         java.lang.Integer getKey(String value) {

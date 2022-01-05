@@ -23,21 +23,37 @@ import model.Program;
  */
 @Stateless
 public class AcademicCalendarFacade extends AbstractFacade<AcademicCalendar> {
-    
+
     @PersistenceContext(unitName = "Peanu3PU")
     private EntityManager em;
     @EJB
     private ProgramFacade pf;
     @EJB
     private BatchFacade bf;
-    
+    @EJB
+    private ActiveBatchFacade abf;
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
     public AcademicCalendarFacade() {
         super(AcademicCalendar.class);
+    }
+
+    public void createAcademicCalendar(AcademicCalendar entity, List<ActiveBatch> activeBatchs) {
+        super.edit(entity);
+        for (ActiveBatch batch : activeBatchs) {
+            abf.edit(batch);
+        }
+    }
+
+    @Override
+    public void edit(AcademicCalendar entity) {
+        for (ActiveBatch ab : entity.getActiveBatchCollection()) {
+            System.out.println(ab);
+        }
     }
 
     /**
@@ -74,7 +90,7 @@ public class AcademicCalendarFacade extends AbstractFacade<AcademicCalendar> {
             for (ActiveBatch batch : calendar.getActiveBatchCollection()) {
                 batchs.remove(batch.getBatch());
             }
-        }        
+        }
         List<ActiveBatch> abs = new ArrayList<>();
         for (Batch b : batchs) {
             ActiveBatch ab = new ActiveBatch();
@@ -112,9 +128,9 @@ public class AcademicCalendarFacade extends AbstractFacade<AcademicCalendar> {
     private List<AcademicCalendar> findOverlappedAcademicCalendars(Date startDate, Date endDate) {
         return (List<AcademicCalendar>) getEntityManager().createNamedQuery("AcademicCalendar.findOverlapped").setParameter("startDate", startDate).setParameter("endDate", endDate).getResultList();
     }
-    
+
     private List<AcademicCalendar> findSimillarAcademicCalendars(AcademicCalendar calendar) {
         return (List<AcademicCalendar>) getEntityManager().createNamedQuery("AcademicCalendar.findSimillarAcademicCalendar").setParameter("academicYear", calendar.getAcademicYear()).setParameter("semester", calendar.getSemester()).getResultList();
     }
-    
+
 }

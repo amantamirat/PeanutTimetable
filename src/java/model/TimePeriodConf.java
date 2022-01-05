@@ -41,6 +41,7 @@ import model.util.ProgramClassification;
 @NamedQueries({
     @NamedQuery(name = "TimePeriodConf.findAll", query = "SELECT t FROM TimePeriodConf t"),
     @NamedQuery(name = "TimePeriodConf.findById", query = "SELECT t FROM TimePeriodConf t WHERE t.id = :id"),
+    @NamedQuery(name = "TimePeriodConf.findByClassification", query = "SELECT t FROM TimePeriodConf t WHERE t.classification = :classification"),
     @NamedQuery(name = "TimePeriodConf.findBySelectedDays", query = "SELECT t FROM TimePeriodConf t WHERE t.selectedDays = :selectedDays"),
     @NamedQuery(name = "TimePeriodConf.findByMinStartTime", query = "SELECT t FROM TimePeriodConf t WHERE t.minStartTime = :minStartTime"),
     @NamedQuery(name = "TimePeriodConf.findByMaxEndTime", query = "SELECT t FROM TimePeriodConf t WHERE t.maxEndTime = :maxEndTime"),
@@ -53,9 +54,9 @@ public class TimePeriodConf implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "classfication")
+    @Column(name = "classification")
     @Enumerated(EnumType.ORDINAL)
-    private ProgramClassification classfication;
+    private ProgramClassification classification;
     @Size(min = 7, max = 7)
     @Pattern(regexp = "([0-1]{7})")
     @Column(name = "selected_days")
@@ -78,6 +79,10 @@ public class TimePeriodConf implements Serializable {
     private Integer slotInterval;
     @Column(name = "time_zone")
     private Integer timeZone;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "default_conf")
+    private boolean defaultConfiguration;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "timeConf")
     private Collection<CalendarPeriod> calendarPeriodCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "timeConf")
@@ -98,12 +103,12 @@ public class TimePeriodConf implements Serializable {
         this.id = id;
     }
 
-    public ProgramClassification getClassfication() {
-        return classfication;
+    public ProgramClassification getClassification() {
+        return classification;
     }
 
-    public void setClassfication(ProgramClassification classfication) {
-        this.classfication = classfication;
+    public void setClassification(ProgramClassification classification) {
+        this.classification = classification;
     }
 
     public String getSelectedDays() {
@@ -154,6 +159,15 @@ public class TimePeriodConf implements Serializable {
         this.timeZone = timeZone;
     }
 
+    public boolean isDefaultConfiguration() {
+        return defaultConfiguration;
+    }
+
+    public void setDefaultConfiguration(boolean defaultConfiguration) {
+        this.defaultConfiguration = defaultConfiguration;
+    }   
+    
+
     @XmlTransient
     public Collection<CalendarPeriod> getCalendarPeriodCollection() {
         return calendarPeriodCollection;
@@ -194,7 +208,7 @@ public class TimePeriodConf implements Serializable {
 
     @Override
     public String toString() {
-        return this.classfication + " [ " + id + " ]";
+        return this.classification + " [ " + id + " ]";
     }
 
     public static String convertToDaysFlag(List<DayOfWeek> selectedDays) {

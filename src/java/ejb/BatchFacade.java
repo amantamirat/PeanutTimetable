@@ -7,6 +7,7 @@ package ejb;
 
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -22,6 +23,8 @@ public class BatchFacade extends AbstractFacade<Batch> {
 
     @PersistenceContext(unitName = "Peanu3PU")
     private EntityManager em;
+    @EJB
+    private ProgramFacade pf;
 
     @Override
     protected EntityManager getEntityManager() {

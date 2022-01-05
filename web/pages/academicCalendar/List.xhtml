@@ -16,6 +16,11 @@
         <ui:define name="body">
             <h:form id="AcademicCalendarListForm">
                 <p:panel header="#{bundle.ListAcademicCalendarTitle}">
+                    <p:contextMenu for="datalist">
+                        <p:menuitem value="Configure Slots" />
+                        <p:menuitem value="Delete" />
+                    </p:contextMenu>
+
                     <p:toolbar>
                         <p:toolbarGroup>                        
                             <p:commandButton id="createButton" 
@@ -26,14 +31,15 @@
                                              oncomplete="PF('AcademicCalendarCreateDialog').show()"
                                              style="margin-right: .5rem">
                                 <p:resetInput target=":AcademicCalendarCreateForm"/>
-                            </p:commandButton>                         
+                            </p:commandButton>                        
 
                         </p:toolbarGroup>
 
                     </p:toolbar>
 
-                    <p:dataTable id="datalist" value="#{academicCalendarController.items}" var="item"
-                                 selectionMode="single" selection="#{academicCalendarController.selected}"
+                    <p:dataTable id="datalist" value="#{academicCalendarController.items}" 
+                                 var="item"
+                                 selectionMode="single"
                                  paginator="true"
                                  rowKey="#{item.id}"
                                  rows="10"
@@ -48,8 +54,7 @@
                             <p:rowToggler/>
                         </p:column>
 
-                        <p:ajax event="rowSelect"   update="viewButton editButton deleteButton"/>
-                        <p:ajax event="rowUnselect" update="viewButton editButton deleteButton"/>
+
 
                         <p:column width="5%">
                             <f:facet name="header">
@@ -57,94 +62,131 @@
                             </f:facet>
                             <h:outputText value="#{rowIndex+1}"/>
                         </p:column>
-                        
+
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAcademicCalendarTitle_academicYear}"/>
+                                <h:outputText value="Year"/>
                             </f:facet>
-                            <h:outputText value="#{item.academicYear}"/>
+                            <h:outputText value="#{item.academicCalendarYear}">
+                                <f:convertDateTime pattern="YYYY" type="localDate" />
+                            </h:outputText>                           
                         </p:column>
+
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAcademicCalendarTitle_semester}"/>
+                                <h:outputText value="Ac. Year and Semester"/>
                             </f:facet>
-                            <h:outputText value="#{item.semester.shortTerm}"/>
+                            <h:outputText value="#{item.academicYear} #{item.semester.shortTerm}"/>
                         </p:column>
+
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAcademicCalendarTitle_classStartDate}"/>
+                                <h:outputText value="Class Begin Date and End Date"/>
                             </f:facet>
                             <h:outputText value="#{item.classStartDate}">
                                 <f:convertDateTime pattern="MM/dd/yyyy" />
                             </h:outputText>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAcademicCalendarTitle_classEndDate}"/>
-                            </f:facet>
+                            <h:outputText value=" - "/>                                
                             <h:outputText value="#{item.classEndDate}">
                                 <f:convertDateTime pattern="MM/dd/yyyy" />
-                            </h:outputText>
+                            </h:outputText>                          
                         </p:column>
+
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAcademicCalendarTitle_examStartDate}"/>
+                                <h:outputText value="Final Exam Start and End Date"/>
                             </f:facet>
                             <h:outputText value="#{item.examStartDate}">
                                 <f:convertDateTime pattern="MM/dd/yyyy" />
                             </h:outputText>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAcademicCalendarTitle_examEndDate}"/>
-                            </f:facet>
+                            <h:outputText value=" - "/>                                
                             <h:outputText value="#{item.examEndDate}">
                                 <f:convertDateTime pattern="MM/dd/yyyy" />
                             </h:outputText>
+                        </p:column>                        
+
+                        <p:column exportable="false">
+                            <p:commandButton id="addButton" 
+                                             icon="pi pi-plus" 
+                                             styleClass="add-button rounded-button ui-button-raised"                                            
+                                             style="margin-right: .5rem">
+                                <p:resetInput target=":AcademicCalendarCreateForm"/>
+                            </p:commandButton>
+                            <p:tooltip for="addButton" value="add/register batches to the #{item} academic calendar!"/>
+                            <p:commandButton icon="pi pi-pencil" update=":AcademicCalendarEditForm"
+                                             oncomplete="PF('AcademicCalendarEditDialog').show()"
+                                             styleClass="edit-button rounded-button ui-button-success" 
+                                             process="@this"
+                                             style="margin-right: .5rem">
+                                <f:setPropertyActionListener value="#{item}" target="#{academicCalendarController.selected}"/>
+                                <p:resetInput target=":AcademicCalendarEditForm"/>
+                            </p:commandButton>
+                            <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" 
+                                             actionListener="#{academicCalendarController.remove(item)}" 
+                                             update=":growl,:AcademicCalendarListForm:datalist">
+                                <p:confirm header="Delete Ac. Year?" message="This will affect lots of associated informations! Becareful!" icon="ui-icon-alert" />
+                            </p:commandButton>                           
                         </p:column>
 
                         <p:rowExpansion>
-                            <p:dataTable 
-                                id="registeredBatchsdatalist" 
-                                value="#{item.activeBatchCollection}" 
-                                var="rBatch"
-                                selectionMode="single"
-                                paginator="true"
-                                rowKey="#{rBatch.id}"
-                                rows="10"
-                                rowsPerPageTemplate="10,20,30,40,50"
-                                rowIndexVar="rowIndex" paginatorPosition="bottom"> 
+                            <div class="card">
+                                <p:panel>
+                                    <p:toolbar>
+                                        <p:toolbarGroup align="right">
+                                            <p:commandButton value="Export" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+                                                <p:dataExporter type="xml" target="registeredBatchsdatalist" fileName="bathes"/>
+                                            </p:commandButton>
+                                        </p:toolbarGroup>
+                                    </p:toolbar>
 
-                                <p:column width="5%">
-                                    <f:facet name="header">
-                                        <h:outputText  value="#"/>
-                                    </f:facet>
-                                    <h:outputText value="#{rowIndex+1}"/>
-                                </p:column>                        
+                                    <p:dataTable 
+                                        id="registeredBatchsdatalist" 
+                                        value="#{item.activeBatchCollection}" 
+                                        var="rBatch"
+                                        selectionMode="single"
+                                        paginator="true"
+                                        rowKey="#{rBatch.id}"
+                                        rows="10"
+                                        rowsPerPageTemplate="10,20,30,40,50"
+                                        rowIndexVar="rowIndex" paginatorPosition="bottom"> 
 
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Registred Batch"/>
-                                    </f:facet>                            
-                                    <h:outputText value="#{rBatch.batch.toString()}"/>
-                                </p:column>                        
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="Year Level"/>
-                                    </f:facet>
-                                    <h:outputText value="#{rBatch.relativeYearLevel}"/>
-                                </p:column>
+                                        <p:column width="5%">
+                                            <f:facet name="header">
+                                                <h:outputText  value="#"/>
+                                            </f:facet>
+                                            <h:outputText value="#{rowIndex+1}"/>
+                                        </p:column>                        
 
-                            </p:dataTable>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Registred Batch"/>
+                                            </f:facet>                            
+                                            <h:outputText value="#{rBatch.batch.toString()}"/>
+                                        </p:column>                        
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Year Level"/>
+                                            </f:facet>
+                                            <h:outputText value="#{rBatch.relativeYearLevel}"/>
+                                        </p:column>
+                                        <p:column exportable="false">                       
+                                            <p:commandButton class="ui-button-warning rounded-small-button" icon="pi pi-trash" 
+                                                             actionListener="#{academicCalendarController.remove(item)}" 
+                                                             update=":growl,:AcademicCalendarListForm:datalist">
+                                                <p:confirm header="Remove Registered Batch?" message="This will affect associated informations! Becareful!" icon="ui-icon-alert" />
+                                            </p:commandButton>                           
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>                               
+                            </div>
                         </p:rowExpansion>
 
                         <f:facet name="footer">
-                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":AcademicCalendarViewForm" oncomplete="PF('AcademicCalendarViewDialog').show()" disabled="#{empty academicCalendarController.selected}"/>
-                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":AcademicCalendarEditForm" oncomplete="PF('AcademicCalendarEditDialog').show()" disabled="#{empty academicCalendarController.selected}"/>
-                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{academicCalendarController.destroy}" update=":growl,datalist" disabled="#{empty academicCalendarController.selected}"/>
+                            Powered by Transformer Academic Calendar Manager.
                         </f:facet>
                     </p:dataTable>
                 </p:panel>
+                <ui:include src="/confirmation.xhtml"/>
             </h:form>
 
             <ui:include src="Create.xhtml"/>

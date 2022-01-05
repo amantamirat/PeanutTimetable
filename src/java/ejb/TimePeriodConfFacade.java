@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import model.TimePeriodConf;
 import model.TimeSlot;
+import model.util.ProgramClassification;
 
 /**
  *
@@ -43,6 +44,20 @@ public class TimePeriodConfFacade extends AbstractFacade<TimePeriodConf> {
             getEntityManager().refresh(find(conf.getId()));
         }
         return confs;
+    }
+
+    public void updateDefault(TimePeriodConf conf) {
+        if (conf.isDefaultConfiguration()) {
+            for (TimePeriodConf periodConf : findTimePeriodConfbyClassification(conf.getClassification())) {
+                periodConf.setDefaultConfiguration(false);
+                super.edit(periodConf);
+            }
+        }
+        super.edit(conf);
+    }
+
+    private List<TimePeriodConf> findTimePeriodConfbyClassification(ProgramClassification classification) {
+        return (List<TimePeriodConf>) getEntityManager().createNamedQuery("TimePeriodConf.findByClassification").setParameter("classification", classification).getResultList();
     }
 
     @Override
